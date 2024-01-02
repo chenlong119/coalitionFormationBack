@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.taskallocation.mapper.TaskMapper">
+    <resultMap type="Task" id="TaskResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="resourceNum" column="resource_num"/>
+        <result property="value" column="value"/>
+        <result property="ddl" column="ddl"/>
+        <result property="duration" column="duration"/>
+        <result property="state" column="state"/>
+        <result property="arrivalTime" column="arrival_time"/>
+    </resultMap>
+
+    <sql id="selectTaskVo">
+        select id,
+               name,
+               resource_num,
+               value,
+               ddl,
+               duration,
+               state,
+               arrival_time,
+               allocbusiness
+        from task
+    </sql>
+
+    <select id="selectTaskList" parameterType="Task" resultMap="TaskResult">
+        <include refid="selectTaskVo"/>
+        <where>
+            <if test="id != null ">
+                and id = #{id}
+            </if>
+            <if test="name != null  and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="state != null ">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTaskById" parameterType="Long" resultMap="TaskResult">
+        <include refid="selectTaskVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTask" parameterType="Task" useGeneratedKeys="true" keyProperty="id">
+        insert into task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="resourceNum != null">
+                resource_num,
+            </if>
+            <if test="value != null">
+                value,
+            </if>
+            <if test="ddl != null">
+                ddl,
+            </if>
+            <if test="duration != null">
+                duration,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="arrivalTime != null">
+                arrival_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="resourceNum != null">
+                #{resourceNum},
+            </if>
+            <if test="value != null">
+                #{value},
+            </if>
+            <if test="ddl != null">
+                #{ddl},
+            </if>
+            <if test="duration != null">
+                #{duration},
+            </if>
+            <if test="state != null">
+                #{state},
+            </if>
+            <if test="arrivalTime != null">
+                #{arrivalTime},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateTask" parameterType="Task">
+        update task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="resourceNum != null">
+                resource_num = #{resourceNum},
+            </if>
+            <if test="value != null">
+                value = #{value},
+            </if>
+            <if test="ddl != null">
+                ddl = #{ddl},
+            </if>
+            <if test="duration != null">
+                duration = #{duration},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="arrivalTime != null">
+                arrival_time = #{arrivalTime},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTaskById" parameterType="Long">
+        delete
+        from task
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTaskByIds" parameterType="String">
+        delete from task where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -18,7 +18,7 @@ ruoyi:
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
-  port: 8080
+  port: 9000
   servlet:
     # 应用的访问路径
     context-path: /
@@ -70,7 +70,7 @@ spring:
   # redis 配置
   redis:
     # 地址
-    host: localhost
+    host: 192.168.44.131
     # 端口，默认为6379
     port: 6379
     # 数据库索引
@@ -97,8 +97,8 @@ token:
   # 令牌密钥
   secret: abcdefghijklmnopqrstuvwxyz
   # 令牌有效期（默认30分钟）
-  expireTime: 30
-  
+  expireTime: 30000
+
 # MyBatis配置
 mybatis:
   # 搜索指定包别名
@@ -129,7 +129,7 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
-  
+
 # 代码生成
 gen:
   # 作者

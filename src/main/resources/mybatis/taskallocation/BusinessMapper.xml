@@ -93,6 +93,12 @@
             <if test="layer != null">
                 layer,
             </if>
+            <if test="longitude != null">
+                longitude,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null and id != ''">
@@ -127,6 +133,12 @@
             </if>
             <if test="layer != null">
                 #{layer},
+            </if>
+            <if test="longitude != null">
+                #{longitude},
+            </if>
+            <if test="latitude != null">
+                #{latitude},
             </if>
         </trim>
     </insert>

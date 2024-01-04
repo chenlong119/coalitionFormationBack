@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.income.mapper.IncomeMapper">
+
+    <select id="queryAll" resultType="CompanyIncome">
+        select * from company_income_lh
+    </select>
+
+    <select id="queryCompanyById" resultType="CompanyIncome">
+        select * from company_income_lh where company_id = #{companyId}
+    </select>
+
+    <select id="queryRelatedCompany" parameterType="Integer" resultType="RelatedCompanyDTO">
+        SELECT ci.*, cr.is_supply, cr.is_cooperation, cr.is_competition, cr.total_relation,cr.analysis
+        FROM company_income_lh ci
+                 INNER JOIN (
+            SELECT CASE
+                       WHEN source_id = #{companyId} THEN target_id
+                       WHEN target_id = #{companyId} THEN source_id
+                       END AS related_companyId, is_supply, is_cooperation, is_competition, total_relation,analysis
+            FROM company_relation_lh
+            WHERE source_id = #{companyId} OR target_id = #{companyId}
+        ) cr ON ci.company_id = cr.related_companyId
+    </select>
+
+    <select id="queryAllNode" resultType="GraphNodeDTO">
+        select ci.company_id, ci.name, ci.field, ci.category, cl.location_id, cl.layer,cl.location_x,cl.location_y
+        from company_income_lh ci, company_location_lh cl where ci.company_id = cl.company_id
+    </select>
+
+    <select id="queryAllLink" resultType="GraphLinkDTO">
+        SELECT id, source_location, target_location, supply_relation as strength, '供应关系' as relation
+        FROM company_supply_relation_lh
+        UNION ALL
+        SELECT id, source_location, target_location, cooperation_relation as strength, '合作关系' as relation
+        FROM company_cooperation_relation_lh
+        UNION ALL
+        SELECT id, source_location, target_location, competition_relation as strength, '竞争关系' as relation
+        FROM company_competition_relation_lh
+    </select>
+
+</mapper>

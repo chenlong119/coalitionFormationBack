@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multig.mapper.MutigTaskMapper">
+    <!-- 查询所有任务 -->
+    <select id="selectAllTasks" resultType="com.ruoyi.project.multig.domain.MutigTask">
+        SELECT task_id   AS id,
+               task_name AS name
+        FROM task_name_sxz
+    </select>
+</mapper>
+

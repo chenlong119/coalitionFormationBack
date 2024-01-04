@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multimode.mapper.BusinessHistoryMapper">
+
+    <resultMap id="BusinessHistoryResult" type="com.ruoyi.project.multimode.domain.BusinessHistory">
+        <result property="historyId" column="history_id" />
+        <result property="taskId" column="task_id" />
+        <result property="taskName" column="task_name" />
+        <result property="deliveryDate" column="delivery_date" />
+        <result property="deliveryExperience" column="delivery_experience" />
+    </resultMap>
+
+    <select id="findAll" resultMap="BusinessHistoryResult">
+        SELECT * FROM business_history;
+    </select>
+    <select id="findByHistoryId" resultType="com.ruoyi.project.multimode.domain.BusinessHistory">
+        SELECT * FROM business_history WHERE history_id = #{historyId}
+    </select>
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multimode.mapper.BusinessMapper">
+    <resultMap type="Business" id="BusinessResult">
+        <result property="businessId" column="business_id"/>
+        <result property="businessName" column="business_name"/>
+        <result property="businessGroupId" column="business_group_id"/>
+        <result property="businessGroupName" column="business_group_name"/>
+        <result property="taskId" column="task_id"/>
+        <result property="businessLinkId" column="business_link_id"/>
+        <result property="businessLinkName" column="business_link_name"/>
+    </resultMap>
+
+    <select id="findAll" resultType="com.ruoyi.project.multimode.domain.Business2">
+        SELECT *
+        FROM business_jrx;
+    </select>
+
+
+    <!-- 对个数进行统计 -->
+    <select id="countBusinessById" resultType="int">
+        SELECT business_id, COUNT(*)
+        FROM business_jrx
+        GROUP BY business_id;
+    </select>
+
+    <select id="getBusinessById" parameterType="String" resultType="com.ruoyi.project.multimode.domain.Business2">
+        SELECT *
+        FROM business_jrx
+        WHERE business_id = #{businessId}
+    </select>
+
+    <select id="getBusinessGroupId" parameterType="String" resultType="com.ruoyi.project.multimode.domain.Business2">
+        SELECT *
+        FROM business_jrx
+        WHERE business_group_id = #{businessGroupId}
+    </select>
+
+    <select id="getBusinessLinkId" parameterType="String" resultType="com.ruoyi.project.multimode.domain.Business2">
+        SELECT *
+        FROM business_jrx
+        WHERE business_link_id = #{businessLinkId}
+    </select>
+
+    <select id="getBusinessName" parameterType="String" resultType="com.ruoyi.project.multimode.domain.Business2">
+        SELECT *
+        FROM business_jrx
+        WHERE business_name = #{businessName}
+    </select>
+
+    <select id="getBusinessNameById" parameterType="String" resultType="String">
+        SELECT business_name
+        FROM business_jrx
+        WHERE business_id = #{businessId}
+    </select>
+</mapper>

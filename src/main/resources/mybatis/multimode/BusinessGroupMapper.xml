@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multimode.mapper.BusinessGroupMapper">
+    <resultMap type="BusinessGroup" id="BusinessGroupResult">
+        <result property="businessGroupId" column="business_group_id"/>
+        <result property="businessGroupName" column="business_group_name"/>
+        <result property="businessGroupNo" column="business_group_no"/>
+        <result property="businessGroupTask" column="business_group_task"/>
+        <result property="businessGroupMode" column="business_group_mode"/>
+    </resultMap>
+
+    <select id="getAllDataList" resultType="com.ruoyi.project.multimode.domain.BusinessGroup">
+        SELECT *
+        FROM business_group;
+    </select>
+
+    <!-- 根据ID查询企业群信息 -->
+    <select id="selectBusinessGroupById" parameterType="string"
+            resultType="com.ruoyi.project.multimode.domain.BusinessGroup">
+        SELECT *
+        FROM business_group
+        WHERE business_group_id = #{businessGroupId}
+    </select>
+
+    <!-- 根据名称查询企业群信息 -->
+    <select id="selectBusinessGroupByName" parameterType="string"
+            resultType="com.ruoyi.project.multimode.domain.BusinessGroup">
+        SELECT *
+        FROM business_group
+        WHERE business_group_name like CONCAT('%', #{businessGroupName}, '%')
+    </select>
+
+    <!-- 根据模式查询企业群信息 -->
+    <select id="selectBusinessGroupByMode" parameterType="string"
+            resultType="com.ruoyi.project.multimode.domain.BusinessGroup">
+        SELECT *
+        FROM business_group
+        WHERE business_group_mode = #{businessGroupMode}
+    </select>
+
+    <!-- 根据编号查询企业群信息 -->
+    <select id="selectBusinessGroupByTask" parameterType="string"
+            resultType="com.ruoyi.project.multimode.domain.BusinessGroup">
+        SELECT *
+        FROM business_group
+        WHERE business_group_task = #{businessGroupTask}
+    </select>
+
+    <!-- 动态SQL，根据不同条件查询企业群信息 -->
+    <select id="selectBusinessGroupByCondition" parameterType="com.ruoyi.project.multimode.domain.BusinessGroup"
+            resultType="com.ruoyi.project.multimode.domain.BusinessGroup">
+        SELECT * FROM business_group
+        <where>
+            <if test="id != null">
+                AND business_group_id = #{id}
+            </if>
+            <if test="name != null">
+                AND business_group_name = #{name}
+            </if>
+            <if test="mode != null">
+                AND business_group_mode = #{mode}
+            </if>
+            <if test="task != null">
+                AND business_group_task = #{task}
+            </if>
+        </where>
+    </select>
+
+    <!-- 分页查询企业群信息 -->
+    <select id="selectBusinessGroupPage" parameterType="com.ruoyi.project.multimode.domain.BusinessGroup"
+            resultType="com.ruoyi.project.multimode.domain.BusinessGroup">
+        SELECT * FROM business_group
+        <where>
+            <!-- 根据需要加入其他查询条件 -->
+        </where>
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+    <!-- 对模式进行统计 -->
+    <select id="countBusinessGroupByMode" resultType="java.util.Map">
+        SELECT business_group_mode, COUNT(*) AS count
+        FROM business_group
+        GROUP BY business_group_mode;
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM business_group
+    </select>
+</mapper>

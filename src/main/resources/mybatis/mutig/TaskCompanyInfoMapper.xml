@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multig.task.mapper.TaskCompanyInfoMapper">
+
+    <!-- 其他SQL映射配置 ... -->
+
+    <!-- 定义一个查询操作 -->
+    <select id="selectByTaskIdAndCompanyId" resultType="com.ruoyi.project.multig.domain.TaskCompanyInfo">
+        SELECT
+            id,
+            task_info AS taskId,
+            company_info AS companyId,
+            date_number AS expectedQuantity,
+            date_time AS expectedDeliveryTime
+        FROM
+            evaluate_info_sxz
+        WHERE
+            task_info = #{taskId}
+          AND company_info = #{companyId}
+    </select>
+
+
+</mapper>

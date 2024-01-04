@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multimode.mapper.ModeEvaluateMapper">
+
+    <resultMap type="com.ruoyi.project.multimode.domain.ModeEvaluate" id="ModeEvaluateResult">
+        <result property="modeName" column="mode_name" />
+        <result property="completionRate" column="completion_rate" />
+        <result property="failureRate" column="failure_rate" />
+    </resultMap>
+
+    <select id="findAll" resultMap="ModeEvaluateResult">
+        SELECT * FROM mode_evaluate;
+    </select>
+
+    <select id="findByName" parameterType="java.lang.String" resultMap="ModeEvaluateResult">
+        SELECT * FROM mode_evaluate WHERE mode_name = #{modeName};
+    </select>
+
+    <select id="findCompletionRateByModeName" resultType="string">
+        SELECT completion_rate FROM mode_evaluate
+        WHERE mode_name = #{modeName}
+    </select>
+
+    <!-- 查询特定模式的故障发生率 -->
+    <select id="findFailureRateByModeName" resultType="string">
+        SELECT failure_rate FROM mode_evaluate
+        WHERE mode_name = #{modeName}
+    </select>
+
+    <select id="findAllSortedByCompletionRate" resultMap="ModeEvaluateResult">
+        SELECT * FROM mode_evaluate ORDER BY completion_rate DESC;
+    </select>
+
+</mapper>

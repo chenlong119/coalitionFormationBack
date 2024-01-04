@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.shareIncentive.mapper.BidMapper">
+
+    <select id="findById" resultType="com.ruoyi.project.shareIncentive.domain.Bid">
+        select * from `ry-vue`.bid where BidID = #{id};
+    </select>
+    <select id="findAll" resultType="com.ruoyi.project.shareIncentive.domain.Bid">
+        select * from `ry-vue`.bid;
+    </select>
+    <select id="findLatestBidAmount" resultType="com.ruoyi.project.shareIncentive.domain.Bid">
+--         select MAX(BidAmount) AS maxBidAmount
+--         from `ry-vue`.bid where  DataID = #{id};
+SELECT *
+FROM `ry-vue`.bid
+WHERE DataID = #{id}
+ORDER BY BidAmount DESC
+    LIMIT 1;
+    </select>
+
+</mapper>

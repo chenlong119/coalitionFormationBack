@@ -212,7 +212,7 @@ public class WorkshopSchedulingServiceImpl implements WorkshopSchedulingService 
       // 初始化 GA 类的参数
       int generation = 18;
       int popsize = 20;
-      double p1 = 0.8; // 交叉概率
+      double p1 = 0.8; // 交叉概率D
       double p2 = 0.2; // 突变概率
       // int machineNum = businessMapper.countBusinessById();
       List<Integer> factoryInfo = Arrays.asList(1, 1, 1, 2, 2, 2); // 工厂信息

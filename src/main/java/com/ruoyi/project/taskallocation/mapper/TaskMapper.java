@@ -61,4 +61,10 @@ public interface TaskMapper {
 
   @Select("select count(*) from task")
   Integer getTaskCount();
+
+  @Select("select * from task where state = 2")
+  List<Task> getFailTask();
+
+  @Select("select max(id) from task")
+  Long getMaxId();
 }

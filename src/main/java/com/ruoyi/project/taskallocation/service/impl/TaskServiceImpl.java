@@ -99,9 +99,32 @@ public class TaskServiceImpl implements ITaskService {
    */
   @Override
   public int deleteTaskByIds(Long[] ids) {
-    // 删除这些任务之前需要做一些操作，还原企业状态，设置task字段为0
     for (Long id : ids) {
       businessMapper.recoverBusinessCoalition(id);
+    }
+    List<Task> failTask = taskMapper.getFailTask();
+    Long chooseId = null;
+    int randomIndex = -1;
+    if (failTask.size() > 0) {
+      int random = (int) (Math.random() * failTask.size());
+      Task task = failTask.get(random);
+      chooseId = task.getId();
+      randomIndex = random;
+    }
+    if (chooseId != null) {
+      Long[] newids = new Long[ids.length + 1];
+      for (int i = 0; i < ids.length; i++) {
+        newids[i] = ids[i];
+      }
+      newids[ids.length] = chooseId;
+      businessMapper.recoverBusinessCoalition(chooseId);
+      taskMapper.deleteTaskByIds(newids);
+      Task chooseTask = failTask.get(randomIndex);
+      // 获取当前任务最大id
+      Long maxId = taskMapper.getMaxId();
+      chooseTask.setId(maxId + 1);
+      insertTask(chooseTask);
+      return 1;
     }
     redisCache.setCacheObject("chy:loading", true);
     return taskMapper.deleteTaskByIds(ids);

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.coalitionformation.mapper.ResourceMapper">
+    <resultMap type="com.ruoyi.project.coalitionformation.entity.Resource" id="ResourceResult">
+        <result property="id" column="resource_id"/>
+        <result property="name" column="name"/>
+        <result property="num" column="number"/>
+    </resultMap>
+    <select id="getCompanyResource" resultMap="ResourceResult">
+        select resource_id, name, number
+        from `ry-vue`.company_resource c
+                 inner join `ry-vue`.resource_all r on c.resource_id = r.id
+        where c.bus_id = #{companyId}
+          and c.layer_id = #{layerId}
+    </select>
+
+    <select id="getTaskResource" resultMap="ResourceResult">
+        select resource_id, name, number
+        from `ry-vue`.task_resource c
+                 inner join `ry-vue`.resource_all r on c.resource_id = r.id
+        where c.task_id = #{taskId}
+    </select>
+</mapper>

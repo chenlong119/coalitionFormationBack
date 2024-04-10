@@ -25,4 +25,10 @@ public class GraphServiceImpl implements GraphService {
   public List<CompanyEdge> getEdges() {
     return graphMapper.getEdges();
   }
+
+  @Override
+  public void addRelation(Integer id1, String id2s, Integer layer) {
+    String[] split = id2s.split(",");
+    for (String id2 : split) graphMapper.addRelation(id1, Integer.valueOf(id2), layer);
+  }
 }

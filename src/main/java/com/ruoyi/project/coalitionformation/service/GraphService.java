@@ -8,4 +8,6 @@ public interface GraphService {
   public List<CompanyNode> getNodes();
 
   List<CompanyEdge> getEdges();
+
+  void addRelation(Integer id1, String id2s, Integer layer);
 }

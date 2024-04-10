@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.generate.taskcoalition.mapper.TaskAllMapper">
+    <resultMap type="TaskAll" id="TaskAllResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="val" column="val"/>
+        <result property="arrivalTime" column="arrival_time"/>
+        <result property="coalitionTime" column="coalition_time"/>
+        <result property="finishTime" column="finish_time"/>
+        <result property="taskStatus" column="task_status"/>
+        <result property="duration" column="duration"/>
+        <result property="productId" column="product_id"/>
+        <result property="coalitionId" column="coalition_id"/>
+        <result property="chainId" column="chain_id"/>
+        <result property="companyId" column="company_id"/>
+    </resultMap>
+
+    <sql id="selectTaskAllVo">
+        select id,
+               name,
+               val,
+               arrival_time,
+               coalition_time,
+               finish_time,
+               task_status,
+               duration,
+               product_id,
+               coalition_id,
+               chain_id,
+               company_id
+        from task_all
+    </sql>
+
+    <select id="selectTaskAllList" parameterType="TaskAll" resultMap="TaskAllResult">
+        <include refid="selectTaskAllVo"/>
+        <where>
+            <if test="id != null ">
+                and id = #{id}
+            </if>
+            <if test="name != null  and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="val != null ">
+                and val = #{val}
+            </if>
+            <if test="taskStatus != null ">
+                and task_status = #{taskStatus}
+            </if>
+            <if test="companyId != null ">
+                and company_id = #{companyId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTaskAllById" parameterType="Long" resultMap="TaskAllResult">
+        <include refid="selectTaskAllVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTaskAll" parameterType="TaskAll">
+        insert into task_all
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="val != null">
+                val,
+            </if>
+            <if test="arrivalTime != null">
+                arrival_time,
+            </if>
+            <if test="coalitionTime != null">
+                coalition_time,
+            </if>
+            <if test="finishTime != null">
+                finish_time,
+            </if>
+            <if test="taskStatus != null">
+                task_status,
+            </if>
+            <if test="duration != null">
+                duration,
+            </if>
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="coalitionId != null">
+                coalition_id,
+            </if>
+            <if test="chainId != null">
+                chain_id,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="val != null">
+                #{val},
+            </if>
+            <if test="arrivalTime != null">
+                #{arrivalTime},
+            </if>
+            <if test="coalitionTime != null">
+                #{coalitionTime},
+            </if>
+            <if test="finishTime != null">
+                #{finishTime},
+            </if>
+            <if test="taskStatus != null">
+                #{taskStatus},
+            </if>
+            <if test="duration != null">
+                #{duration},
+            </if>
+            <if test="productId != null">
+                #{productId},
+            </if>
+            <if test="coalitionId != null">
+                #{coalitionId},
+            </if>
+            <if test="chainId != null">
+                #{chainId},
+            </if>
+            <if test="companyId != null">
+                #{companyId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateTaskAll" parameterType="TaskAll">
+        update task_all
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="val != null">
+                val = #{val},
+            </if>
+            <if test="arrivalTime != null">
+                arrival_time = #{arrivalTime},
+            </if>
+            <if test="coalitionTime != null">
+                coalition_time = #{coalitionTime},
+            </if>
+            <if test="finishTime != null">
+                finish_time = #{finishTime},
+            </if>
+            <if test="taskStatus != null">
+                task_status = #{taskStatus},
+            </if>
+            <if test="duration != null">
+                duration = #{duration},
+            </if>
+            <if test="productId != null">
+                product_id = #{productId},
+            </if>
+            <if test="coalitionId != null">
+                coalition_id = #{coalitionId},
+            </if>
+            <if test="chainId != null">
+                chain_id = #{chainId},
+            </if>
+            <if test="companyId != null">
+                company_id = #{companyId},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTaskAllById" parameterType="Long">
+        delete
+        from task_all
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTaskAllByIds" parameterType="String">
+        delete from task_all where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

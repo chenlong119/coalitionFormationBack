@@ -24,4 +24,9 @@ public class GraphController {
   public List<CompanyEdge> getEdges() {
     return graphService.getEdges();
   }
+
+  @GetMapping("/addrelation")
+  public void addRelation(Integer id1, String id2s, Integer layer) {
+    graphService.addRelation(id1, id2s, layer);
+  }
 }

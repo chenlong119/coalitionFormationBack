@@ -57,9 +57,9 @@
     <select id="getAllCompanies" resultType="com.ruoyi.project.dataFusion.domain.Company2">
         SELECT it.*, clc.location_id, clc.location_x, clc.location_y, clc.layer
         FROM (
-                 SELECT DISTINCT c.id, c.name, c.chain_name AS chain, ci.category, ci.market_share, ci.market_increase, ci.profitability, ci.invest_ratio, ci.product_width, ci.product_depth, ci.brand_awareness, ci.cooperation_willingness, ci.reputation, ci.cooperation_num, ci.cooperation_success, ci.average_roi, ci.suppliers_num, ci.turnover, ci.delivery_rate, trade_level
+                 SELECT DISTINCT c.id, c.name,ci.category, ci.market_share, ci.market_increase,ci.profitability,ci.invest_ratio,ci.product_width,ci.product_depth,ci.brand_awareness,ci.cooperation_willingness,ci.reputation,ci.cooperation_num,ci.cooperation_success,ci.average_roi,ci.suppliers_num,ci.turnover,ci.delivery_rate,trade_level
                  FROM company_all c
-                          JOIN company_income ci ON c.id = ci.id
+                          INNER JOIN company_income ci ON c.id = ci.id
              ) AS it
                  JOIN company_location_cj clc ON it.id = clc.company_id;
     </select>

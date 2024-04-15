@@ -106,6 +106,6 @@ public class CompanyAllServiceImpl implements ICompanyAllService {
   public List<String> getNamesByIds(String ids) {
     List<Integer> tmp = new ArrayList<>();
     for (String id : ids.split(",")) tmp.add(Integer.valueOf(id));
-    return companyAllMapper.getNamesByIds(ids);
+    return companyAllMapper.getNamesByIds(tmp);
   }
 }

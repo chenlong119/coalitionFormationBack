@@ -74,5 +74,5 @@ public interface CompanyAllMapper {
   @Select("select  * from `ry-vue`.company_all where  id=#{id}")
   List<CompanyAll> getById(Integer id);
 
-  List<String> getNamesByIds(String ids);
+  List<String> getNamesByIds(List<Integer> ids);
 }

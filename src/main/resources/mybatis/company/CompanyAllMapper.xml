@@ -23,7 +23,7 @@
                address,
                company_type,
                chain_name,
-               group_id,
+               coalition_id,
                process_rate,
                rep,
                status
@@ -42,8 +42,8 @@
             <if test="chainName != null  and chainName != ''">
                 and chain_name like concat('%', #{chainName}, '%')
             </if>
-            <if test="groupId != null ">
-                and group_id = #{groupId}
+            <if test="coalitionId != null ">
+                and coalition_id = #{coalitionId}
             </if>
             <if test="status != null ">
                 and status = #{status}

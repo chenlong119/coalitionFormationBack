@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multimode.mapper.CoalitionMapper">
+
+    <resultMap id="CoalitionDetailsResult" type="com.ruoyi.project.multimode.domain.Coalition">
+        <result property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="taskId" column="task_id" />
+        <result property="createTime" column="create_time" />
+        <result property="coalitionStatus" column="coalition_status" />
+        <result property="mode" column="mode" />
+    </resultMap>
+    <resultMap id="CoalitionDetailsResultMap" type="com.ruoyi.project.multimode.domain.CoalitionDetails">
+        <result property="coalitionId" column="coalitionId"/>
+        <result property="coalitionName" column="coalitionName"/>
+        <result property="taskId" column="taskId"/>
+        <result property="companyCount" column="companyCount"/>
+        <result property="mode" column="mode"/>
+        <result property="modeName" column="modeName" />
+    </resultMap>
+
+
+    <insert id="insertCoalition" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO coalition (name, task_id, create_time, coalition_status, mode)
+        VALUES (#{name}, #{taskId}, #{createTime}, #{coalitionStatus}, #{mode})
+    </insert>
+
+    <update id="updateCoalitionStatusByTaskId">
+        UPDATE coalition SET coalition_status = #{status} WHERE task_id = #{taskId}
+    </update>
+
+    <select id="selectCoalitionsByTaskId" resultMap="CoalitionDetailsResult">
+        SELECT * FROM coalition WHERE task_id = #{taskId}
+    </select>
+
+    <select id="selectCoalitionDetails" resultType="com.ruoyi.project.multimode.domain.CoalitionDetails">
+        SELECT
+            c.id AS coalition_id,
+            c.name AS coalition_name,
+            c.task_id,
+            COUNT(cc.company_id) AS company_count,
+            c.mode,
+            c.create_time,
+            c.coalition_status,
+            m.mode_name AS modeName
+        FROM coalition c
+                 LEFT JOIN mode m ON c.mode = m.mode
+                 LEFT JOIN coalition_company cc ON c.id = cc.coalition_id
+        GROUP BY c.id, c.name, c.task_id, c.mode, c.create_time, c.coalition_status, m.mode_name
+    </select>
+
+    <select id="searchCoalitionByCriteria" resultMap="CoalitionDetailsResultMap">
+        SELECT
+        c.id AS coalition_id,
+        c.name AS coalition_name,
+        c.task_id,
+        COUNT(cc.company_id) AS company_count,
+        c.mode,
+        c.create_time,
+        c.coalition_status
+        m.mode_name AS modeName
+        FROM coalition c
+        LEFT JOIN coalition_company cc ON c.id = cc.coalition_id
+        WHERE 1=1
+        <if test="coalitionId != null">
+            AND c.id = #{coalitionId}
+        </if>
+        <if test="taskId != null">
+            AND c.task_id = #{taskId}
+        </if>
+        <if test="coalitionName != null and coalitionName != ''">
+            AND c.name LIKE CONCAT('%', #{coalitionName}, '%')
+        </if>
+        <if test="mode != null and coalitionName != ''">
+            AND m.mode_name LIKE CONCAT('%', #{modeName}, '%')
+        </if>
+        GROUP BY c.id
+    </select>
+
+    <select id="selectLastInsertedId" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID()
+    </select>
+
+    <!-- 插入联盟公司 -->
+    <insert id="insertCoalitionCompany">
+        INSERT INTO coalition_company (coalition_id, company_id, date_number, actual_number, date_time, actual_time)
+        VALUES (#{coalitionId}, #{companyId}, #{dateNumber}, #{actualNumber}, #{dateTime}, #{actualTime})
+    </insert>
+
+
+
+
+
+</mapper>

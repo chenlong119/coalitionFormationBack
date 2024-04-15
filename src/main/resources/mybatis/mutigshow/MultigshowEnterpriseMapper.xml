@@ -1,0 +1,15 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multigshow.mapper.MultigshowEnterpriseMapper">
+    <resultMap id="enterpriseResultMap" type="com.ruoyi.project.multigshow.domain.MultigshowEnterprise">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="company_type" column="company_type"/>
+        <result property="chain_name" column="chain_name"/>
+        <result property="score" column="score"/>
+    </resultMap>
+
+    <select id="selectEnterpriseList" resultMap="enterpriseResultMap">
+        SELECT DISTINCT id, name, company_type, chain_name, score FROM company_all
+    </select>
+
+</mapper>

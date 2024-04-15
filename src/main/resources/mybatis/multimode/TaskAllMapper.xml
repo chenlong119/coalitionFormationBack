@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multimode.mapper.TaskAllMapper">
+
+    <resultMap id="TaskResult" type="com.ruoyi.project.multimode.domain.TaskAll2">
+        <result property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="val" column="val" />
+        <result property="arrivalTime" column="arrival_time" />
+        <result property="coalitionTime" column="coalition_time" />
+        <result property="finishTime" column="finish_time" />
+        <result property="taskStatus" column="task_status" />
+        <result property="duration" column="duration" />
+        <result property="productId" column="product_id" />
+        <result property="coalitionId" column="coalition_id" />
+    </resultMap>
+
+    <select id="selectActiveTasks" resultMap="TaskResult">
+        SELECT * FROM task_all WHERE task_status = 1;
+    </select>
+
+    <select id="findTaskNameById" resultType="string">
+        SELECT name FROM task_all WHERE id = #{taskId}
+    </select>
+
+</mapper>

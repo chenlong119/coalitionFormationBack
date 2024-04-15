@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multig.mapper.ScoreRecordMapper">
+<!-- 其他查询操作 ... -->
+
+    <select id="selectScoreHistory" resultType="com.ruoyi.project.multig.domain.ScoreRecord">
+        SELECT DISTINCT
+            A.name AS name,
+            C.name AS companyname,
+            B.score AS score,
+            B.timestamp AS timestamp
+        FROM
+            coalition A
+                JOIN
+            score_records_sxz B ON A.task_id = B.task_id
+                JOIN
+            company_all C ON B.evaluated_company_id = C.id
+        WHERE
+            B.company_id = #{userId}
+    </select>
+
+
+
+    <insert id="insertRelationRecord" parameterType="com.ruoyi.project.multig.domain.ScoreRecord">
+        INSERT INTO multiplex_relationship (company1_id, company2_id, layer_id)
+        SELECT #{companyId}, #{evaluatedCompanyId}, 3
+        FROM dual
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM multiplex_relationship
+            WHERE company1_id = #{companyId}
+              AND company2_id = #{evaluatedCompanyId}
+                AND layer_id=3
+        )
+          AND NOT EXISTS (
+            SELECT 1
+            FROM multiplex_relationship
+            WHERE company1_id = #{evaluatedCompanyId}
+              AND company2_id = #{companyId}
+              AND layer_id=3
+        )
+    </insert>
+</mapper>

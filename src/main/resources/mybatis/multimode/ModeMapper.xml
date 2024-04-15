@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multimode.mapper.ModeMapper">
+
+    <resultMap id="ModeResult" type="com.ruoyi.project.multimode.domain.Mode">
+        <result property="mode" column="mode" />
+        <result property="modeName" column="mode_name" />
+        <result property="competitionNum" column="competition_rate" />
+        <result property="failureNum" column="failure_rate" />
+    </resultMap>
+
+    <select id="findModeById" parameterType="java.lang.Integer" resultMap="ModeResult">
+        SELECT * FROM mode WHERE mode = #{modeId}
+    </select>
+
+    <update id="updateCompetitionRateById">
+        UPDATE mode SET competition_num = CAST(competition_num AS UNSIGNED) + 1 WHERE mode = #{modeId}
+    </update>
+
+    <select id="selectAllModes" resultType="com.ruoyi.project.multimode.domain.Mode">
+        SELECT mode,
+               mode_name AS modeName,
+               CAST(competition_num AS UNSIGNED) AS competitionNum,
+               CAST(failure_num AS UNSIGNED) AS failureNum
+        FROM mode
+    </select>
+</mapper>

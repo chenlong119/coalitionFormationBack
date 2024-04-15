@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.multimode.mapper.ScoreRecordMapper">
+
+    <resultMap id="ScoreRecordResult" type="com.ruoyi.project.multimode.domain.ScoreRecord2">
+        <id property="id" column="id" />
+        <result property="taskId" column="task_id" />
+        <result property="companyId" column="company_id" />
+        <result property="evaluatedCompanyId" column="evaluated_company_id" />
+        <result property="score" column="score" javaType="java.math.BigDecimal"/>
+    </resultMap>
+
+    <resultMap id="ScoreDetailResult" type="com.ruoyi.project.multimode.domain.ScoreDetail">
+    <result property="id" column="id" />
+    <result property="score" column="score" />
+    <result property="taskName" column="task_name" />
+    <result property="companyName" column="company_name" />
+    <result property="evaluatedCompanyName" column="evaluated_company_name" />
+</resultMap>
+
+    <select id="selectAllWithDetails" resultMap="ScoreDetailResult">
+        SELECT sr.id, sr.score, sr.task_id,sr.company_id,sr.evaluated_company_id,t.name as task_name, c1.name as company_name, c2.name as evaluated_company_name
+        FROM score_records_sxz sr
+                 JOIN task_all t ON sr.task_id = t.id
+                 JOIN company_all c1 ON sr.company_id = c1.id
+                 JOIN company_all c2 ON sr.evaluated_company_id = c2.id
+    </select>
+
+
+    <select id="selectById" resultMap="ScoreRecordResult">
+        SELECT id, task_id, company_id, evaluated_company_id, score
+        FROM score_records_sxz
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="ScoreRecordResult">
+        SELECT id, task_id, company_id, evaluated_company_id, score
+        FROM score_records_sxz
+    </select>
+
+</mapper>

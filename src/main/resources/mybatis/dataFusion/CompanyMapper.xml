@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.dataFusion.mapper.CompanyMapper">
+    <resultMap id="linkResultMap" type="com.ruoyi.project.dataFusion.domain.Link">
+        <result property="sourceLocation" column="source_id"/>
+        <result property="targetLocation" column="target_id"/>
+    </resultMap>
+
+    <resultMap id="RelationResultMap" type="com.ruoyi.project.dataFusion.domain.Relation">
+        <result property="sourceId" column="source_id"/>
+        <result property="targetId" column="target_id"/>
+        <result property="isSupply" column="is_supply"/>
+        <result property="isCooperation" column="is_cooperation"/>
+        <result property="isCompetition" column="is_competition"/>
+    </resultMap>
+
+    <update id="updateCompanyCategory">
+        UPDATE company_income
+        SET category = #{category}
+        WHERE id = #{companyId}
+    </update>
+
+    <update id="updateSupplyRelationStrength">
+        UPDATE company_supply_relation_cj
+        SET supply_relation = #{supply_relation}
+        where source_location = #{source_location}
+          AND target_location = #{target_location}
+    </update>
+
+    <update id="updateCompetitionRelationStrength">
+        UPDATE company_competition_relation_cj
+        SET competition_relation = #{competition_relation}
+        where source_location = #{source_location}
+          AND target_location = #{target_location}
+    </update>
+
+    <update id="updateCooperationRelationStrength">
+        UPDATE company_cooperation_relation_cj
+        SET cooperation_relation = #{cooperation_relation}
+        where source_location = #{source_location}
+          AND target_location = #{target_location}
+    </update>
+    <update id="updateTotalStrength">
+        UPDATE company_relation_total
+        SET total_relation = #{total_relation}
+        where source_id = #{source_id}
+          AND target_id = #{target_id}
+    </update>
+    <update id="updateRelationStrength">
+        update multiplex_relationship
+        set strength = #{strength}
+        where company1_id = #{company1_id} and company2_id=#{company2_id} and layer_id=#{layer_id}
+    </update>
+
+    <select id="getAllCompanies" resultType="com.ruoyi.project.dataFusion.domain.Company2">
+        SELECT it.*, clc.location_id, clc.location_x, clc.location_y, clc.layer
+        FROM (
+                 SELECT DISTINCT c.id, c.name,ci.category, ci.market_share, ci.market_increase,ci.profitability,ci.invest_ratio,ci.product_width,ci.product_depth,ci.brand_awareness,ci.cooperation_willingness,ci.reputation,ci.cooperation_num,ci.cooperation_success,ci.average_roi,ci.suppliers_num,ci.turnover,ci.delivery_rate,trade_level
+                 FROM company_all c
+                          INNER JOIN company_income ci ON c.id = ci.id
+             ) AS it
+                 JOIN company_location_cj clc ON it.id = clc.company_id;
+    </select>
+
+    <select id="getAllCompaniesWithoutLocation" resultType="com.ruoyi.project.dataFusion.domain.Company2">
+        SELECT DISTINCT c.id, c.name,ci.category, ci.market_share, ci.market_increase,ci.profitability,ci.invest_ratio,ci.product_width,ci.product_depth,ci.brand_awareness,ci.cooperation_willingness,ci.reputation,ci.cooperation_num,ci.cooperation_success,ci.average_roi,ci.suppliers_num,ci.turnover,ci.delivery_rate,trade_level
+        FROM company_all c
+                 INNER JOIN company_income ci ON c.id = ci.id;
+    </select>
+
+    <select id="getAllCompaniesWithOverAllLocation" resultType="com.ruoyi.project.dataFusion.domain.Company2">
+        SELECT it.*, clc.location_x, clc.location_y
+        FROM (
+                 SELECT c.id, c.name, c.chain_name AS chain, ci.category, ci.market_share, ci.market_increase, ci.profitability, ci.invest_ratio, ci.product_width, ci.product_depth, ci.brand_awareness, ci.cooperation_willingness, ci.reputation, ci.cooperation_num, ci.cooperation_success, ci.average_roi, ci.suppliers_num, ci.turnover, ci.delivery_rate, trade_level
+                 FROM company_all c
+                          JOIN company_income ci ON c.id = ci.id
+                 WHERE c.layer_id = 1
+             ) AS it
+                 JOIN company_overall_location_cj clc ON it.id = clc.company_id;
+    </select>
+
+    <select id="getAllLinks" resultType="com.ruoyi.project.dataFusion.domain.Link">
+        SELECT
+            ROW_NUMBER() OVER () id,
+                clc1.location_id AS source_location,
+            clc2.location_id AS target_location,
+            mr.strength AS strengthRelation
+        FROM
+            multiplex_relationship mr
+                JOIN
+            company_location_cj clc1 ON mr.company1_id = clc1.company_id AND mr.layer_id = clc1.layer
+                JOIN
+            company_location_cj clc2 ON mr.company2_id = clc2.company_id AND mr.layer_id = clc2.layer;
+    </select>
+
+    <select id="getOverallLinks" resultType="com.ruoyi.project.dataFusion.domain.Link">
+        SELECT sourceId                                                         AS sourceLocation,
+               targetId                                                         AS targetLocation,
+               MAX(competition_relation)                                        AS competitionRelation,
+               MAX(supply_relation)                                             AS supplyRelation,
+               MAX(cooperation_relation)                                        AS cooperationRelation,
+               MAX(total_relation)                                              AS strengthRelation,
+               GROUP_CONCAT(DISTINCT analysis ORDER BY analysis SEPARATOR ', ') AS analysis
+        FROM (SELECT cr.source_id                          AS sourceId,
+                     cr.target_id                          AS targetId,
+                     COALESCE(csr.strength, 0) AS competition_relation,
+                     0                                     AS supply_relation,
+                     0                                     AS cooperation_relation,
+                     cr.total_relation,
+                     cr.analysis
+              FROM company_relation_total cr
+                       JOIN
+                   company_location_cj cl_source ON cr.source_id = cl_source.company_id
+                       JOIN
+                   company_location_cj cl_target ON cr.target_id = cl_target.company_id
+                       JOIN
+                   multiplex_relationship csr ON cl_source.company_id = csr.company1_id
+                       AND cl_target.company_id = csr.company2_id AND csr.layer_id = 1
+              UNION
+
+              SELECT cr.source_id                     AS sourceId,
+                     cr.target_id                     AS targetId,
+                     0                                AS competition_relation,
+                     COALESCE(csr.strength, 0) AS supply_relation,
+                     0                                AS cooperation_relation,
+                     cr.total_relation,
+                     cr.analysis
+              FROM company_relation_total cr
+                       JOIN
+                   company_location_cj cl_source ON cr.source_id = cl_source.company_id
+                       JOIN
+                   company_location_cj cl_target ON cr.target_id = cl_target.company_id
+                       JOIN
+                   multiplex_relationship csr ON cl_source.company_id = csr.company1_id
+                       AND cl_target.company_id = csr.company2_id AND csr.layer_id = 2
+
+              UNION
+
+              SELECT cr.source_id                          AS sourceId,
+                     cr.target_id                          AS targetId,
+                     0                                     AS competition_relation,
+                     0                                     AS supply_relation,
+                     COALESCE(csr.strength, 0) AS cooperation_relation,
+                     cr.total_relation,
+                     cr.analysis
+              FROM company_relation_total cr
+                       JOIN
+                   company_location_cj cl_source ON cr.source_id = cl_source.company_id
+                       JOIN
+                   company_location_cj cl_target ON cr.target_id = cl_target.company_id
+                       LEFT JOIN
+                   multiplex_relationship csr ON cl_source.company_id = csr.company1_id
+                       AND cl_target.company_id = csr.company2_id AND csr.layer_id = 3 ) AS subquery
+        GROUP BY sourceId,targetId;
+    </select>
+    <select id="getGroupInfo" resultType="com.ruoyi.project.dataFusion.domain.Group">
+        SELECT g.group_id           AS name,
+               GROUP_CONCAT(it.name) AS list,
+               COUNT(it.id)          AS value,
+       g.`describe`
+        FROM company_group_cj g
+            JOIN
+            (
+            SELECT c.id, c.name, c.chain_name AS chain, ci.category
+            FROM company_all c
+            JOIN company_income ci ON c.id = ci.id
+            WHERE c.layer_id = 1
+            ) AS it ON g.group_id = it.category
+        GROUP BY g.group_id, g.`describe`;
+    </select>
+
+    <select id="getSupplyAdjacency" resultMap="linkResultMap">
+        SELECT company1_id AS source_id,company2_id AS target_id FROM multiplex_relationship where layer_id =2
+    </select>
+
+    <select id="getCompetitionAdjacency" resultMap="linkResultMap">
+        SELECT company1_id AS source_id,company2_id AS target_id FROM multiplex_relationship where layer_id =1
+    </select>
+
+    <select id="getCooperationAdjacency" resultMap="linkResultMap">
+        SELECT company1_id AS source_id,company2_id AS target_id FROM multiplex_relationship where layer_id =3
+    </select>
+
+    <select id="getLocationIdByCompanyId" resultType="java.lang.Integer">
+        SELECT location_id
+        FROM company_location_cj
+        WHERE company_id = #{companyId}
+          and layer = #{layer}
+    </select>
+
+    <select id="getAllRelation" resultType="com.ruoyi.project.dataFusion.domain.Relation">
+        SELECT source_id, target_id, is_supply, is_cooperation, is_competition
+        FROM company_relation_total
+    </select>
+
+    <select id="selectSupplyStrength" resultType="java.lang.Double">
+        SELECT supply_relation
+        FROM company_supply_relation_cj
+        WHERE source_location = #{source_location}
+          and target_location = #{target_location}
+    </select>
+    <select id="selectCooperationStrength" resultType="java.lang.Double">
+        SELECT cooperation_relation
+        FROM company_cooperation_relation_cj
+        WHERE source_location = #{source_location}
+          and target_location = #{target_location}
+    </select>
+    <select id="selectCompetitionStrength" resultType="java.lang.Double">
+        SELECT competition_relation
+        FROM company_competition_relation_cj
+        WHERE source_location = #{source_location}
+          and target_location = #{target_location}
+    </select>
+    <select id="selectStrength" resultType="java.lang.Double">
+        SELECT strength FROM multiplex_relationship where company1_id = #{company1_id} and company2_id = #{company2_id} and layer_id = #{layer_id}
+    </select>
+</mapper>

@@ -1,6 +1,8 @@
 package com.ruoyi.project.generate.company.service;
 
+import com.ruoyi.project.coalitionformation.entity.Resource;
 import com.ruoyi.project.generate.company.domain.CompanyAll;
+
 import java.util.List;
 
 /**
@@ -63,4 +65,6 @@ public interface ICompanyAllService {
   List<CompanyAll> getById(Integer id);
 
   List<String> getNamesByIds(String ids);
+
+  List<CompanyAll> getCompanyByResource(List<Resource> resources);
 }

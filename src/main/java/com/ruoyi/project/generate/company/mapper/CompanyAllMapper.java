@@ -1,8 +1,9 @@
 package com.ruoyi.project.generate.company.mapper;
 
 import com.ruoyi.project.generate.company.domain.CompanyAll;
-import java.util.List;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * 企业信息Mapper接口
@@ -75,4 +76,7 @@ public interface CompanyAllMapper {
   List<CompanyAll> getById(Integer id);
 
   List<String> getNamesByIds(List<Integer> ids);
+
+  @Select("select * from `ry-vue`.company_all where status = 1")
+  List<CompanyAll> getAllIdleCompany();
 }

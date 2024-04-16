@@ -79,4 +79,7 @@ public interface CompanyAllMapper {
 
   @Select("select * from `ry-vue`.company_all where status = 1")
   List<CompanyAll> getAllIdleCompany();
+
+  @Select("select * from `ry-vue`.company_all where status = 2 and company_all.coalition_id =#{coalitionId}")
+  List<CompanyAll> getCompanyByCoalition(Long coalitionId);
 }

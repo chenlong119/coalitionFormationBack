@@ -67,4 +67,6 @@ public interface ICompanyAllService {
   List<String> getNamesByIds(String ids);
 
   List<CompanyAll> getCompanyByResource(List<Resource> resources);
+
+  List<CompanyAll> getCompanyByCoalition(Long coalitionId);
 }

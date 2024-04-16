@@ -155,4 +155,9 @@ public class CompanyAllServiceImpl implements ICompanyAllService {
     }
     return res;
   }
+
+  @Override
+  public List<CompanyAll> getCompanyByCoalition(Long coalitionId) {
+    return companyAllMapper.getCompanyByCoalition(coalitionId);
+  }
 }

@@ -95,4 +95,9 @@ public class CompanyAllController extends BaseController {
     public List<CompanyAll> getCompanyByCoalition(Long coalitionId) {
         return companyAllService.getCompanyByCoalition(coalitionId);
     }
+
+    @GetMapping("/getall")
+  public List<CompanyAll> getAllCompany() {
+    return companyAllService.getAllCompany();
+  }
 }

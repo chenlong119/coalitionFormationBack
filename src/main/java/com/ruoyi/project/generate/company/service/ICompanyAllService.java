@@ -69,4 +69,6 @@ public interface ICompanyAllService {
   List<CompanyAll> getCompanyByResource(List<Resource> resources);
 
   List<CompanyAll> getCompanyByCoalition(Long coalitionId);
+
+    List<CompanyAll> getAllCompany();
 }

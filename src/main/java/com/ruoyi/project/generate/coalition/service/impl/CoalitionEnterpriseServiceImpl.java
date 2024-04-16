@@ -1,12 +1,13 @@
 package com.ruoyi.project.generate.coalition.service.impl;
 
-import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.project.generate.coalition.domain.CoalitionEnterprise;
+import com.ruoyi.project.generate.coalition.mapper.CoalitionEnterpriseMapper;
+import com.ruoyi.project.generate.coalition.service.ICoalitionEnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.project.generate.coalition.mapper.CoalitionEnterpriseMapper;
-import com.ruoyi.project.generate.coalition.domain.CoalitionEnterprise;
-import com.ruoyi.project.generate.coalition.service.ICoalitionEnterpriseService;
+
+import java.util.List;
 
 /**
  * 企业联盟Service业务层处理
@@ -91,5 +92,10 @@ public class CoalitionEnterpriseServiceImpl implements ICoalitionEnterpriseServi
     public int deleteCoalitionEnterpriseById(Long id)
     {
         return coalitionEnterpriseMapper.deleteCoalitionEnterpriseById(id);
+    }
+
+    @Override
+    public List<CoalitionEnterprise> getAll() {
+        return coalitionEnterpriseMapper.getAll();
     }
 }

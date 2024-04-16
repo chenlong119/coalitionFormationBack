@@ -2,18 +2,19 @@ package com.ruoyi.project.coalitionformation.mapper;
 
 import com.ruoyi.project.coalitionformation.entity.CompanyEdge;
 import com.ruoyi.project.coalitionformation.entity.CompanyNode;
-import java.util.List;
 import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 @Mapper
 public interface GraphMapper {
-  @Select("select  id, name, rep,layer_id, group_id from company_all")
+  @Select("select  id, name, rep,layer_id, coalition_id from company_all")
   @Results({
     @Result(property = "id", column = "id"),
     @Result(property = "name", column = "name"),
     @Result(property = "layer_id", column = "layer_id"),
     @Result(property = "value", column = "rep"),
-    @Result(property = "category", column = "group_id")
+    @Result(property = "category", column = "coalition_id")
   })
   public List<CompanyNode> getNodes();
 

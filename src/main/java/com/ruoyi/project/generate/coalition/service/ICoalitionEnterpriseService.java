@@ -1,7 +1,8 @@
 package com.ruoyi.project.generate.coalition.service;
 
-import java.util.List;
 import com.ruoyi.project.generate.coalition.domain.CoalitionEnterprise;
+
+import java.util.List;
 
 /**
  * 企业联盟Service接口
@@ -58,4 +59,6 @@ public interface ICoalitionEnterpriseService
      * @return 结果
      */
     public int deleteCoalitionEnterpriseById(Long id);
+
+    List<CoalitionEnterprise> getAll();
 }

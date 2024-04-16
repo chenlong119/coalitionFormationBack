@@ -1,7 +1,9 @@
 package com.ruoyi.project.generate.coalition.mapper;
 
-import java.util.List;
 import com.ruoyi.project.generate.coalition.domain.CoalitionEnterprise;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * 企业联盟Mapper接口
@@ -58,4 +60,7 @@ public interface CoalitionEnterpriseMapper
      * @return 结果
      */
     public int deleteCoalitionEnterpriseByIds(Long[] ids);
+
+    @Select("select * from `ry-vue`.coalition")
+    List<CoalitionEnterprise> getAll();
 }

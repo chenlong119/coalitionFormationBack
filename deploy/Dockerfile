@@ -9,7 +9,7 @@ WORKDIR /app
 # 将本地的 Spring Boot 可执行 JAR 文件复制到镜像中的 /app 目录
 COPY target/ruoyi.jar /app/app.jar
 
-# 暴露 Spring Boot 应用程序的端口（假设 Spring Boot 应用程序使用8080端口）
+# 暴露 Spring Boot 应用程序的端口（假设 Spring Boot 应用程序使用8080端口），测试webhook
 EXPOSE 8080
 
 # 定义启动命令，运行 Spring Boot 应用程序

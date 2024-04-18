@@ -29,7 +29,6 @@ public class CompanyController {
   @GetMapping("/list")
   public CompanyDTO getAllCompaniesWithoutLocation() throws MWException {
     log.info("企业特征信息");
-//    companyService.CompanyDataProcessor();
     return new CompanyDTO(companyService.getAllCompaniesWithoutLocation());
   }
 

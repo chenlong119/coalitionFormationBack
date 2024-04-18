@@ -23,7 +23,7 @@
                address,
                company_type,
                chain_name,
-               group_id,
+               coalition_id,
                process_rate,
                rep,
                status
@@ -42,8 +42,8 @@
             <if test="chainName != null  and chainName != ''">
                 and chain_name like concat('%', #{chainName}, '%')
             </if>
-            <if test="groupId != null ">
-                and group_id = #{groupId}
+            <if test="coalitionId != null ">
+                and coalition_id = #{coalitionId}
             </if>
             <if test="status != null ">
                 and status = #{status}
@@ -139,8 +139,8 @@
             <if test="chainName != null">
                 chain_name = #{chainName},
             </if>
-            <if test="groupId != null">
-                group_id = #{groupId},
+            <if test="coalitionId != null">
+                coalition_id = #{coalitionId},
             </if>
             <if test="processRate != null">
                 process_rate = #{processRate},
@@ -170,8 +170,8 @@
 
     <select id="getNamesByIds" resultType="java.lang.String">
         select distinct name from company_all where id in
-        <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
+        <foreach item="companyId" collection="list" open="(" separator="," close=")">
+            #{companyId}
         </foreach>
     </select>
 </mapper>

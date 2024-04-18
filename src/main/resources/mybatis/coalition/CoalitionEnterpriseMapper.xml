@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.generate.coalition.mapper.CoalitionEnterpriseMapper">
+    
+    <resultMap type="CoalitionEnterprise" id="CoalitionEnterpriseResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="coalitionStatus"    column="coalition_status"    />
+        <result property="mode"    column="mode"    />
+    </resultMap>
+
+    <sql id="selectCoalitionEnterpriseVo">
+        select id, name, task_id, create_time, coalition_status, mode from coalition
+    </sql>
+
+    <select id="selectCoalitionEnterpriseList" parameterType="CoalitionEnterprise" resultMap="CoalitionEnterpriseResult">
+        <include refid="selectCoalitionEnterpriseVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="coalitionStatus != null "> and coalition_status = #{coalitionStatus}</if>
+            <if test="id != null "> and id = #{id}</if>
+        </where>
+    </select>
+    
+    <select id="selectCoalitionEnterpriseById" parameterType="Long" resultMap="CoalitionEnterpriseResult">
+        <include refid="selectCoalitionEnterpriseVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCoalitionEnterprise" parameterType="CoalitionEnterprise" useGeneratedKeys="true" keyProperty="id">
+        insert into coalition
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="coalitionStatus != null">coalition_status,</if>
+            <if test="mode != null">mode,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="coalitionStatus != null">#{coalitionStatus},</if>
+            <if test="mode != null">#{mode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCoalitionEnterprise" parameterType="CoalitionEnterprise">
+        update coalition
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="coalitionStatus != null">coalition_status = #{coalitionStatus},</if>
+            <if test="mode != null">mode = #{mode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCoalitionEnterpriseById" parameterType="Long">
+        delete from coalition where id = #{id}
+    </delete>
+
+    <delete id="deleteCoalitionEnterpriseByIds" parameterType="String">
+        delete from coalition where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -44,16 +44,26 @@ def predict_future_values(data, future_steps):
 
     return predicted_values
 
+# 随机函数
+def generate_random_values(future_steps):
+    # 生成随机值作为预测结果
+    predicted_values = [random.randint(100, 300) for _ in range(future_steps)]
+    return predicted_values
+
 # 主函数
 if __name__ == '__main__':
     # 获取参数和数据集
     future_steps = int(sys.argv[1])  # 步长
-    # 随机生成时间序列数据
-    data = [random.randint(100, 300) for _ in range(20)]
-    # 调用函数进行预测
-    predicted_values = predict_future_values(data, future_steps)
+#     # 随机生成时间序列数据
+#     data = [random.randint(100, 300) for _ in range(20)]
+#     # 调用函数进行预测
+#     predicted_values = predict_future_values(data, future_steps)
     # 格式化输出随机生成的时间序列数据
     # print("随机生成的时间序列数据:", [round(val, 2) for val in data])
+
+    # 生成收益随机值
+    predicted_values = generate_random_values(future_steps)
+
     # 格式化输出预测值
     print([round(val, 2) for val in predicted_values])
 

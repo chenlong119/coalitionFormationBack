@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Slf4j
@@ -29,7 +30,7 @@ public class CompanyController {
   @GetMapping("/list")
   public CompanyDTO getAllCompaniesWithoutLocation() throws MWException {
     log.info("企业特征信息");
-//    companyService.CompanyDataProcessor();
+    companyService.CompanyDataProcessor();
     return new CompanyDTO(companyService.getAllCompaniesWithoutLocation());
   }
 
@@ -57,4 +58,8 @@ public class CompanyController {
     return companyService.getGroupInfo();
   }
 
+  @GetMapping("/searchByName")
+  public CompanyDTO searchSingleByName(@RequestParam String name){
+    return new CompanyDTO(companyService.searchSingleByName(name));
+  }
 }

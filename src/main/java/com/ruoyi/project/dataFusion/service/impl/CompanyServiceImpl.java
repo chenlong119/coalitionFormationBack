@@ -405,6 +405,11 @@ public class CompanyServiceImpl implements CompanyService {
     return companyMapper.getGroupInfo();
   }
 
+  @Override
+  public List<Company2> searchSingleByName(String name) {
+    return companyMapper.searchSingleByName(name);
+  }
+
   private static int getIndexOfId(Set<Integer> ids, int id) {
     List<Integer> idList = new ArrayList<>(ids);
     return idList.indexOf(id);

@@ -67,4 +67,6 @@ public interface CompanyMapper {
   double selectStrength(@Param("company1_id") int company1_id,@Param("company2_id") int company2_id, @Param("layer_id") int layer_id);
 
   void updateRelationStrength(@Param("company1_id") int company1_id,@Param("company2_id") int company2_id, @Param("strength") double strength, @Param("layer_id") int layer_id);
+
+  List<Company2> searchSingleByName(String name);
 }

@@ -6,7 +6,7 @@ import com.ruoyi.project.coalitionformation.mapper.CoalitionTaskMapper;
 import com.ruoyi.project.coalitionformation.service.CoalitionTaskService;
 import com.ruoyi.project.generate.company.domain.CompanyAll;
 import com.ruoyi.project.generate.company.service.ICompanyAllService;
-import com.ruoyi.project.generate.domain.TaskAll;
+import com.ruoyi.project.generate.taskcoalition.domain.TaskAll;
 import com.ruoyi.project.generate.taskcoalition.service.ITaskAllService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,15 +37,15 @@ public class CoalitionTaskServiceImpl implements CoalitionTaskService
         coalition.setName("联盟"+ coalitionId);
         coalitionTaskMapper.updateCoalition(coalition);
         for(CompanyAll company:selectedCompany) {
-            company.setCoalitionId(coalitionId.longValue());
-            company.setStatus(2L);
+            company.setCoalitionId(coalitionId);
+            company.setStatus(2);
             companyAllService.updateCompanyAll(company);
         }
         TaskAll task = new TaskAll();
-        task.setId(taskId.longValue());
-        task.setCoalitionId(coalitionId.longValue());
+        task.setId(taskId);
+        task.setCoalitionId(coalitionId);
         task.setCoalitionTime(new Date());
-        task.setTaskStatus(1L);
+        task.setTaskStatus(1);
         taskAllService.updateTaskAll(task);
         return coalitionId;
     }

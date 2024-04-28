@@ -47,7 +47,6 @@ public class CompanyAllServiceImpl implements ICompanyAllService {
             company -> {
               String chainName =
                   companyAllMapper.getIndustryChainNameByLayerId(company.getLayerId());
-              company.setChainName(chainName);
             });
     return allList;
   }

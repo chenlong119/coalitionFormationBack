@@ -1,6 +1,7 @@
 package com.ruoyi.project.generate.taskcoalition.service;
 
-import com.ruoyi.project.generate.domain.TaskAll;
+import com.ruoyi.project.generate.taskcoalition.domain.TaskAll;
+
 import java.util.List;
 
 /**

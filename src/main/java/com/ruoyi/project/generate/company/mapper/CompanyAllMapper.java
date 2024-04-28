@@ -43,7 +43,7 @@ public interface CompanyAllMapper {
    * @return 产业链名称
    */
   @Select("select name from chain where layer_id = #{layer_id}")
-  public String getIndustryChainNameByLayerId(Long layer_id);
+  public String getIndustryChainNameByLayerId(Integer layer_id);
 
   /**
    * 修改企业信息

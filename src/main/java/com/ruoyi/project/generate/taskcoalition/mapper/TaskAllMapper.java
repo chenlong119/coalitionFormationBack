@@ -1,8 +1,9 @@
 package com.ruoyi.project.generate.taskcoalition.mapper;
 
-import com.ruoyi.project.generate.domain.TaskAll;
-import java.util.List;
+import com.ruoyi.project.generate.taskcoalition.domain.TaskAll;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * 任务信息Mapper接口

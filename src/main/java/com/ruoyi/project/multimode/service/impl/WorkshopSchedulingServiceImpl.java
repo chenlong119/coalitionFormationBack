@@ -182,7 +182,7 @@ public class WorkshopSchedulingServiceImpl implements WorkshopSchedulingService 
       //System.out.println("任务数：" + jobNum);
       //System.out.println("企业数：" + machineNum);
       // 创建 GA 类的实例
-      if (work != null && !work.isEmpty()) {
+      if (popsize == 20) {
         //System.out.println("work.size(): " + work.size()); // 打印 work 的大小，用于调试
 
         // 调用 gaInitial 方法

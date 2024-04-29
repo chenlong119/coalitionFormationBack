@@ -240,19 +240,19 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!--java和matlab连接包-->
+
+<!--        cj的两个jar包-->
         <dependency>
-            <groupId>com.chain</groupId>
+            <groupId>com.chenlong</groupId>
+            <artifactId>cluster</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.chenlong</groupId>
             <artifactId>javabuilder</artifactId>
             <version>1.0.0</version>
         </dependency>
 
-        <!--聚类-->
-        <dependency>
-            <groupId>com.chain</groupId>
-            <artifactId>mutiviewcluster</artifactId>
-            <version>1.0.0</version>
-        </dependency>
 
     </dependencies>
 

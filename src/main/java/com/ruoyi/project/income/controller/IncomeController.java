@@ -257,6 +257,7 @@ public class IncomeController {
       }
       result.put("single", predictedValuesSingle);
       result.put("group", predictedValuesGroup);
+      logger.info("single", predictedValuesSingle);
 
       int exitCode = process.waitFor();
       System.out.println("exitCode:" + exitCode);

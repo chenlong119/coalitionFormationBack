@@ -62,4 +62,6 @@ public class CompanyController {
   public CompanyDTO searchSingleByName(@RequestParam String name){
     return new CompanyDTO(companyService.searchSingleByName(name));
   }
+
+
 }

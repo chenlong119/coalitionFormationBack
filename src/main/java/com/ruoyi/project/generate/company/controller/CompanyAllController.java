@@ -8,18 +8,12 @@ import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.generate.company.domain.CompanyAll;
 import com.ruoyi.project.generate.company.service.ICompanyAllService;
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 企业信息Controller
@@ -95,5 +89,15 @@ public class CompanyAllController extends BaseController {
   @GetMapping("/getnames")
   public List<String> getNamesByIds(String ids) {
     return companyAllService.getNamesByIds(ids);
+  }
+
+  @GetMapping("/getcompanybycoalition")
+    public List<CompanyAll> getCompanyByCoalition(Long coalitionId) {
+        return companyAllService.getCompanyByCoalition(coalitionId);
+    }
+
+    @GetMapping("/getall")
+  public List<CompanyAll> getAllCompany() {
+    return companyAllService.getAllCompany();
   }
 }

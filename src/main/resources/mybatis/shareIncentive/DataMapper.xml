@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.shareIncentive.mapper.DataMapper">
+<!--    <resultMap id="DataMapperResult" type="Data">-->
+<!--        <result property="DataID"    column="DataID"    />-->
+<!--        <result property="DataName"    column="DataName"    />-->
+<!--        <result property="Description"    column="Description"    />-->
+<!--        <result property="StartingPrice"    column="StartingPrice"    />-->
+<!--        <result property="CurrentPrice"    column="CurrentPrice"    />-->
+<!--        <result property="StartTime"    column="StartTime"    />-->
+<!--        <result property="EndTime"    column="EndTime"    />-->
+<!--        <result property="Status"    column="Status"    />-->
+<!--    </resultMap>-->
+
+    <select id="findById" resultType="com.ruoyi.project.shareIncentive.domain.Data">
+        select * from `ry-vue`.data where DataID = #{id};
+    </select>
+    <select id="findAll" resultType="com.ruoyi.project.shareIncentive.domain.Data">
+        select * from `ry-vue`.data;
+    </select>
+    <select id="selectIng" resultType="com.ruoyi.project.shareIncentive.domain.Data">
+        select * from `ry-vue`.data where Status = #{status}  ;
+    </select>
+</mapper>

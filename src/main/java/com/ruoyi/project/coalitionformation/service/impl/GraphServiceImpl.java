@@ -4,9 +4,10 @@ import com.ruoyi.project.coalitionformation.entity.CompanyEdge;
 import com.ruoyi.project.coalitionformation.entity.CompanyNode;
 import com.ruoyi.project.coalitionformation.mapper.GraphMapper;
 import com.ruoyi.project.coalitionformation.service.GraphService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class GraphServiceImpl implements GraphService {
@@ -15,9 +16,6 @@ public class GraphServiceImpl implements GraphService {
   @Override
   public List<CompanyNode> getNodes() {
     List<CompanyNode> nodes = graphMapper.getNodes();
-    for (CompanyNode node : nodes) {
-      node.setCategory(0);
-    }
     return nodes;
   }
 

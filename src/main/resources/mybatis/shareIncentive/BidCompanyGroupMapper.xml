@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.shareIncentive.mapper.BidCompanyGroupMapper">
+    <insert id="add">
+        INSERT INTO `ry-vue`.bid_company_group (UserName,AuctionId, BidTime, BidAmount)
+        VALUES (#{userName},#{auctionId},#{bidTime},#{bidAmount});
+    </insert>
+    <update id="setSelected">
+        UPDATE `ry-vue`.bid_company_group
+        SET selected = 1, selectedDate = CURRENT_TIMESTAMP
+        WHERE bidId = #{id};
+
+    </update>
+
+    <select id="getAll" resultType="com.ruoyi.project.shareIncentive.domain.BidCompanyGroup">
+        SELECT * FROM `ry-vue`.bid_company_group;
+    </select>
+    <select id="getByAuctionId" resultType="com.ruoyi.project.shareIncentive.domain.BidCompanyGroup">
+        SELECT * FROM `ry-vue`.bid_company_group
+        WHERE AuctionId = #{id};
+    </select>
+</mapper>

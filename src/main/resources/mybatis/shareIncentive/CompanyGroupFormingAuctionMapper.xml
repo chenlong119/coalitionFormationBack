@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.shareIncentive.mapper.CompanyGroupFormingAuctionMapper">
+    <insert id="add" parameterType="com.ruoyi.project.shareIncentive.domain.CompanyGroupFormingAuction">
+        INSERT INTO `ry-vue`.company_group_forming_auction
+        (motivationTask, groupAuctionReleaser, requestDescription, companyAuctionLeft, profitAuctionStart, dateRelease, dateFinish, auctionState, chain)
+        VALUES
+            (#{motivationTask}, #{groupAuctionReleaser}, #{requestDescription}, #{companyAuctionLeft}, #{profitAuctionStart}, #{dateRelease}, #{dateFinish}, #{auctionState}, #{chain})
+    </insert>
+
+    <update id="update"></update>
+
+    <delete id="delete"></delete>
+
+    <select id="getAll" resultType="com.ruoyi.project.shareIncentive.domain.CompanyGroupFormingAuction">
+        SELECT * FROM `ry-vue`.company_group_forming_auction;
+    </select>
+    <select id="getByReleaser" resultType="com.ruoyi.project.shareIncentive.domain.CompanyGroupFormingAuction">
+
+        SELECT * FROM `ry-vue`.company_group_forming_auction
+        WHERE groupAuctionReleaser = #{name};
+
+
+
+    </select>
+    <select id="getByUsernameBid"
+            resultType="com.ruoyi.project.shareIncentive.domain.CompanyGroupFormingAuction">
+
+        SELECT a.*
+        FROM `ry-vue`.company_group_forming_auction a
+                 JOIN `ry-vue`.bid_company_group b ON a.id = b.AuctionId
+        WHERE b.UserName = #{name}
+        GROUP BY b.AuctionId;
+    </select>
+</mapper>

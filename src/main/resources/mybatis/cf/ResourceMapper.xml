@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.coalitionformation.mapper.ResourceMapper">
+    <resultMap type="com.ruoyi.project.coalitionformation.entity.Resource" id="ResourceResult">
+        <result property="id" column="resource_id"/>
+        <result property="name" column="name"/>
+        <result property="num" column="number"/>
+    </resultMap>
+    <select id="getCompanyResource" resultMap="ResourceResult">
+        select resource_id, name, number
+        from `ry-vue`.company_resource c
+                 inner join `ry-vue`.resource_all r on c.resource_id = r.id
+        where c.company_id = #{companyId}
+          and c.layer_id = #{layerId}
+    </select>
+
+    <select id="getTaskResource" resultMap="ResourceResult">
+        select resource_id, name, number
+        from `ry-vue`.task_resource c
+                 inner join `ry-vue`.resource_all r on c.resource_id = r.id
+        where c.task_id = #{taskId}
+    </select>
+
+    <update id="updateTaskResource">
+        update task_resource
+        set number = #{resource.num}
+        where task_id = #{task_id}
+          and resource_id = #{resource.id}
+    </update>
+
+    <update id="updateCompanyResource">
+        update company_resource
+        set number = #{resource.num}
+        where company_id = #{company_id}
+          and resource_id = #{resource.id}
+          and layer_id = #{layerId}
+    </update>
+
+    <delete id="deleteTaskResource">
+        delete
+        from task_resource
+        where task_id = #{task_id}
+          and resource_id = #{resource_id}
+    </delete>
+
+    <delete id="deleteCompanyResource">
+        delete
+        from company_resource
+        where company_id = #{company_id}
+          and resource_id = #{resource_id}
+          and layer_id = #{layerId}
+    </delete>
+
+    <insert id="insertTaskResource">
+        insert into task_resource (task_id, resource_id, number)
+        values (#{task_id}, #{resource.id}, #{resource.num})
+    </insert>
+
+    <insert id="insertCompanyResource">
+        insert into company_resource (company_id, resource_id, number, layer_id)
+        values (#{company_id}, #{resource.id}, #{resource.num}, #{layerId})
+    </insert>
+</mapper>

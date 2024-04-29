@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.generate.company.mapper.CompanyAllMapper">
+    <resultMap type="CompanyAll" id="CompanyAllResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="layerId" column="layer_id"/>
+        <result property="address" column="address"/>
+        <result property="companyType" column="company_type"/>
+        <result property="groupId" column="group_id"/>
+        <result property="processRate" column="process_rate"/>
+        <result property="rep" column="rep"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <sql id="selectCompanyAllVo">
+        select id,
+               name,
+               layer_id,
+               address,
+               company_type,
+               coalition_id,
+                company_type,
+               process_rate,
+               rep,
+               status
+        from company_all
+    </sql>
+
+    <select id="selectCompanyAllList" parameterType="CompanyAll" resultMap="CompanyAllResult">
+        <include refid="selectCompanyAllVo"/>
+        <where>
+            <if test="name != null  and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="id != null  and id != ''">
+                and id=#{id}
+            </if>
+            <if test="layerId != null ">
+                and layer_id = #{layerId}
+            </if>
+            <if test="status != null ">
+                and status = #{status}
+            </if>
+            <if test="companyType != null ">
+                and company_type = #{companyType}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCompanyAllById" parameterType="Long" resultMap="CompanyAllResult">
+        <include refid="selectCompanyAllVo"/>
+        where id = #{id} and layer_id = #{layerId}
+    </select>
+
+    <insert id="insertCompanyAll" parameterType="CompanyAll" useGeneratedKeys="true" keyProperty="id">
+        insert into company_all
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                id,
+            </if>
+            <if test="name != null and name != ''">
+                name,
+            </if>
+            <if test="layerId != null">
+                layer_id,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="companyType != null">
+                company_type,
+            </if>
+            <if test="chainName != null">
+                chain_name,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="processRate != null">
+                process_rate,
+            </if>
+            <if test="rep != null">
+                rep,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                #{id},
+            </if>
+            <if test="name != null and name != ''">
+                #{name},
+            </if>
+            <if test="layerId != null">
+                #{layerId},
+            </if>
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="companyType != null">
+                #{companyType},
+            </if>
+            <if test="chainName != null">
+                #{chainName},
+            </if>
+            <if test="groupId != null">
+                #{groupId},
+            </if>
+            <if test="processRate != null">
+                #{processRate},
+            </if>
+            <if test="rep != null">
+                #{rep},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateCompanyAll" parameterType="CompanyAll">
+        update company_all
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="companyType != null">
+                company_type = #{companyType},
+            </if>
+            <if test="chainName != null">
+                chain_name = #{chainName},
+            </if>
+            <if test="coalitionId != null">
+                coalition_id = #{coalitionId},
+            </if>
+            <if test="processRate != null">
+                process_rate = #{processRate},
+            </if>
+            <if test="rep != null">
+                rep = #{rep},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </trim>
+        where id = #{id} and layer_id=#{layerId}
+    </update>
+
+    <delete id="deleteCompanyAllById" parameterType="Long">
+        delete
+        from company_all
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteCompanyAllByIds" parameterType="String">
+        delete from company_all where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getNamesByIds" resultType="java.lang.String">
+        select distinct name from company_all where id in
+        <foreach item="companyId" collection="list" open="(" separator="," close=")">
+            #{companyId}
+        </foreach>
+    </select>
+</mapper>

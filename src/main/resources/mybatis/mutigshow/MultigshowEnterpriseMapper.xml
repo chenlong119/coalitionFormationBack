@@ -4,12 +4,20 @@
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="company_type" column="company_type"/>
-        <result property="chain_name" column="chain_name"/>
+        <result property="layer_id" column="layer_id"/>
         <result property="score" column="score"/>
     </resultMap>
 
     <select id="selectEnterpriseList" resultMap="enterpriseResultMap">
-        SELECT DISTINCT id, name, company_type, chain_name, score FROM company_all
+        SELECT
+            MIN(id) as id,
+            MAX(name) as name,
+            MAX(company_type) as company_type,
+            MAX(layer_id) as layer_id,
+            MAX(score) as score
+        FROM company_all
+        GROUP BY id;
+
     </select>
 
 </mapper>

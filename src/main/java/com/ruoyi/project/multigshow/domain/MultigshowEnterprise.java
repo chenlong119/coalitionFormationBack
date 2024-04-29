@@ -8,7 +8,7 @@ public class MultigshowEnterprise {
     private Long id;
     private String name;
     private String company_type;
-    private String chain_name;
+    private Integer layer_id;
     private Integer cooperationCount;
     private Double score;
 }

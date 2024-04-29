@@ -49,7 +49,7 @@
           AND target_id = #{target_id}
     </update>
     <update id="updateRelationStrength">
-        update multiplex_relationship
+        update multiplex_relationship_1
         set strength = #{strength}
         where company1_id = #{company1_id} and company2_id=#{company2_id} and layer_id=#{layer_id}
     </update>
@@ -73,9 +73,10 @@
     <select id="getAllCompaniesWithOverAllLocation" resultType="com.ruoyi.project.dataFusion.domain.Company2">
         SELECT it.*, clc.location_x, clc.location_y
         FROM (
-                 SELECT c.id, c.name, c.chain_name AS chain, ci.category, ci.market_share, ci.market_increase, ci.profitability, ci.invest_ratio, ci.product_width, ci.product_depth, ci.brand_awareness, ci.cooperation_willingness, ci.reputation, ci.cooperation_num, ci.cooperation_success, ci.average_roi, ci.suppliers_num, ci.turnover, ci.delivery_rate, trade_level
+                 SELECT c.id, c.name, a.name AS chain, ci.category, ci.market_share, ci.market_increase, ci.profitability, ci.invest_ratio, ci.product_width, ci.product_depth, ci.brand_awareness, ci.cooperation_willingness, ci.reputation, ci.cooperation_num, ci.cooperation_success, ci.average_roi, ci.suppliers_num, ci.turnover, ci.delivery_rate, trade_level
                  FROM company_all c
                           JOIN company_income ci ON c.id = ci.id
+                          JOIN chain a ON a.id = c.layer_id
                  WHERE c.layer_id = 1
              ) AS it
                  JOIN company_overall_location_cj clc ON it.id = clc.company_id;
@@ -88,7 +89,7 @@
             clc2.location_id AS target_location,
             mr.strength AS strengthRelation
         FROM
-            multiplex_relationship mr
+            multiplex_relationship_1 mr
                 JOIN
             company_location_cj clc1 ON mr.company1_id = clc1.company_id AND mr.layer_id = clc1.layer
                 JOIN
@@ -116,7 +117,7 @@
                        JOIN
                    company_location_cj cl_target ON cr.target_id = cl_target.company_id
                        JOIN
-                   multiplex_relationship csr ON cl_source.company_id = csr.company1_id
+                   multiplex_relationship_1 csr ON cl_source.company_id = csr.company1_id
                        AND cl_target.company_id = csr.company2_id AND csr.layer_id = 1
               UNION
 
@@ -133,7 +134,7 @@
                        JOIN
                    company_location_cj cl_target ON cr.target_id = cl_target.company_id
                        JOIN
-                   multiplex_relationship csr ON cl_source.company_id = csr.company1_id
+                   multiplex_relationship_1 csr ON cl_source.company_id = csr.company1_id
                        AND cl_target.company_id = csr.company2_id AND csr.layer_id = 2
 
               UNION
@@ -151,7 +152,7 @@
                        JOIN
                    company_location_cj cl_target ON cr.target_id = cl_target.company_id
                        LEFT JOIN
-                   multiplex_relationship csr ON cl_source.company_id = csr.company1_id
+                   multiplex_relationship_1 csr ON cl_source.company_id = csr.company1_id
                        AND cl_target.company_id = csr.company2_id AND csr.layer_id = 3 ) AS subquery
         GROUP BY sourceId,targetId;
     </select>
@@ -163,24 +164,25 @@
         FROM company_group_cj g
             JOIN
             (
-            SELECT c.id, c.name, c.chain_name AS chain, ci.category
+            SELECT c.id, c.name, a.name AS chain, ci.category
             FROM company_all c
             JOIN company_income ci ON c.id = ci.id
+            JOIN chain a ON a.id = c.layer_id
             WHERE c.layer_id = 1
             ) AS it ON g.group_id = it.category
         GROUP BY g.group_id, g.`describe`;
     </select>
 
     <select id="getSupplyAdjacency" resultMap="linkResultMap">
-        SELECT company1_id AS source_id,company2_id AS target_id FROM multiplex_relationship where layer_id =2
+        SELECT company1_id AS source_id,company2_id AS target_id FROM multiplex_relationship_1 where layer_id =2
     </select>
 
     <select id="getCompetitionAdjacency" resultMap="linkResultMap">
-        SELECT company1_id AS source_id,company2_id AS target_id FROM multiplex_relationship where layer_id =1
+        SELECT company1_id AS source_id,company2_id AS target_id FROM multiplex_relationship_1 where layer_id =1
     </select>
 
     <select id="getCooperationAdjacency" resultMap="linkResultMap">
-        SELECT company1_id AS source_id,company2_id AS target_id FROM multiplex_relationship where layer_id =3
+        SELECT company1_id AS source_id,company2_id AS target_id FROM multiplex_relationship_1 where layer_id =3
     </select>
 
     <select id="getLocationIdByCompanyId" resultType="java.lang.Integer">
@@ -214,6 +216,12 @@
           and target_location = #{target_location}
     </select>
     <select id="selectStrength" resultType="java.lang.Double">
-        SELECT strength FROM multiplex_relationship where company1_id = #{company1_id} and company2_id = #{company2_id} and layer_id = #{layer_id}
+        SELECT strength FROM multiplex_relationship_1 where company1_id = #{company1_id} and company2_id = #{company2_id} and layer_id = #{layer_id}
+    </select>
+    <select id="searchSingleByName" resultType="com.ruoyi.project.dataFusion.domain.Company2">
+        SELECT DISTINCT c.id, c.name,ci.category, ci.market_share, ci.market_increase,ci.profitability,ci.invest_ratio,ci.product_width,ci.product_depth,ci.brand_awareness,ci.cooperation_willingness,ci.reputation,ci.cooperation_num,ci.cooperation_success,ci.average_roi,ci.suppliers_num,ci.turnover,ci.delivery_rate,trade_level
+        FROM company_all c
+                 INNER JOIN company_income ci ON c.id = ci.id
+        WHERE c.name = #{name};
     </select>
 </mapper>

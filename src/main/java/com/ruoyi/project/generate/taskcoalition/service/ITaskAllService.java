@@ -1,6 +1,7 @@
 package com.ruoyi.project.generate.taskcoalition.service;
 
-import com.ruoyi.project.generate.domain.TaskAll;
+import com.ruoyi.project.generate.taskcoalition.domain.TaskAll;
+
 import java.util.List;
 
 /**
@@ -61,6 +62,8 @@ public interface ITaskAllService {
   String getProductNameById(Integer id);
 
   TaskAll getOne(Integer id);
+
+  List<TaskAll> getChainTask(Integer chainId);
 
   List<TaskAll> getAllTask();
 }

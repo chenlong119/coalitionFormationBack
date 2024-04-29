@@ -12,7 +12,7 @@
         select resource_id, name, number
         from `ry-vue`.company_resource c
                  inner join `ry-vue`.resource_all r on c.resource_id = r.id
-        where c.bus_id = #{companyId}
+        where c.company_id = #{companyId}
           and c.layer_id = #{layerId}
     </select>
 
@@ -33,7 +33,7 @@
     <update id="updateCompanyResource">
         update company_resource
         set number = #{resource.num}
-        where bus_id = #{company_id}
+        where company_id = #{company_id}
           and resource_id = #{resource.id}
           and layer_id = #{layerId}
     </update>
@@ -48,7 +48,7 @@
     <delete id="deleteCompanyResource">
         delete
         from company_resource
-        where bus_id = #{company_id}
+        where company_id = #{company_id}
           and resource_id = #{resource_id}
           and layer_id = #{layerId}
     </delete>
@@ -59,7 +59,7 @@
     </insert>
 
     <insert id="insertCompanyResource">
-        insert into company_resource (bus_id, resource_id, number, layer_id)
+        insert into company_resource (company_id, resource_id, number, layer_id)
         values (#{company_id}, #{resource.id}, #{resource.num}, #{layerId})
     </insert>
 </mapper>

@@ -24,6 +24,7 @@ public class TaskBreakdownServiceImpl implements TaskBreakdownService {
     public List<SubtaskResult> calculateSubtaskResults() {
         List<SubtaskResult> results = new ArrayList<>();
         List<TaskAll2> tasks = taskallMapper.selectActiveTasks();
+        int begin = 1;
         List<CompanyAll2> companies = companyallMapper.selectAllCompanies();
 
         // 对每个任务进行处理
@@ -31,22 +32,25 @@ public class TaskBreakdownServiceImpl implements TaskBreakdownService {
             int[] vals = splitValueRandomly(taskall.getVal());
             int[] durations = splitValueRandomly(taskall.getDuration());
 
-            for (int i = 0; i < 4; i++) { // Assume there are always 4 subtasks
-                for (CompanyAll2 companyall : companies) {
-                    SubtaskResult result = new SubtaskResult();
-                    result.setCompanyId(companyall.getId());
-                    result.setLayerId(companyall.getLayerId());
-                    result.setGroupId(companyall.getGroupId());
-                    result.setTaskId(taskall.getId());
-                    result.setSubtaskId(i + 1); // Subtask ID from 1 to 4
-                    result.setCost(vals[i] / (double) companyall.getProcessRate());
-                    result.setTime(durations[i] / (double) companyall.getProcessRate());
-                    results.add(result);
+            if(begin!= 1) {
+                for (int i = 0; i < 4; i++) { // Assume there are always 4 subtasks
+                    for (CompanyAll2 companyall : companies) {
+                        SubtaskResult result = new SubtaskResult();
+                        result.setCompanyId(companyall.getId());
+                        result.setLayerId(companyall.getLayerId());
+                        result.setGroupId(companyall.getGroupId());
+                        result.setTaskId(taskall.getId());
+                        result.setSubtaskId(i + 1); // Subtask ID from 1 to 4
+                        result.setCost(vals[i] / (double) companyall.getProcessRate());
+                        result.setTime(durations[i] / (double) companyall.getProcessRate());
+                        results.add(result);
+                    }
                 }
             }
         }
         return results;
     }
+
 
     private int[] splitValueRandomly(int value) {
         int[] parts = new int[4];

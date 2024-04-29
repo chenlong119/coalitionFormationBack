@@ -26,6 +26,7 @@
                coalition_time,
                finish_time,
                task_status,
+                task_type,
                duration,
                product_id,
                coalition_id,
@@ -43,14 +44,14 @@
             <if test="name != null  and name != ''">
                 and name like concat('%', #{name}, '%')
             </if>
-            <if test="val != null ">
-                and val = #{val}
+            <if test="taskType != null ">
+                and task_type = #{taskType}
             </if>
             <if test="taskStatus != null ">
                 and task_status = #{taskStatus}
             </if>
-            <if test="companyId != null ">
-                and company_id = #{companyId}
+            <if test="chainId != null ">
+                and chain_id = #{chainId}
             </if>
         </where>
     </select>
@@ -68,6 +69,9 @@
             </if>
             <if test="name != null">
                 name,
+            </if>
+            <if test="taskType != null">
+                task_type,
             </if>
             <if test="val != null">
                 val,
@@ -106,6 +110,9 @@
             </if>
             <if test="name != null">
                 #{name},
+            </if>
+            <if test="taskType != null">
+                #{taskType},
             </if>
             <if test="val != null">
                 #{val},
@@ -188,6 +195,13 @@
 
     <delete id="deleteTaskAllByIds" parameterType="String">
         delete from task_all where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteTaskResource">
+        delete from task_resource where task_id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

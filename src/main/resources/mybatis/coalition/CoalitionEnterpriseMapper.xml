@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="taskId != null "> and task_id = #{taskId}</if>
             <if test="coalitionStatus != null "> and coalition_status = #{coalitionStatus}</if>
             <if test="id != null "> and id = #{id}</if>
+            and name not like '新%'
         </where>
     </select>
     

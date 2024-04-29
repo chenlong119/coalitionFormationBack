@@ -1,11 +1,12 @@
 package com.ruoyi.project.coalitionformation.mapper;
 
 import com.ruoyi.project.coalitionformation.entity.Resource;
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface ResourceMapper {

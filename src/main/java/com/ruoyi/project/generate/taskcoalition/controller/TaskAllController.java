@@ -7,24 +7,18 @@ import com.ruoyi.framework.security.LoginUser;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.project.generate.domain.TaskAll;
+import com.ruoyi.project.generate.taskcoalition.domain.TaskAll;
 import com.ruoyi.project.generate.taskcoalition.service.ITaskAllService;
-import java.util.Date;
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 任务信息Controller
@@ -52,6 +46,10 @@ public class TaskAllController extends BaseController {
     return taskAllService.getAllTask();
   }
 
+  @GetMapping("/getChainTask")
+    public List<TaskAll> getChainTask(Integer chainId) {
+        return taskAllService.getChainTask(chainId);
+    }
   /** 导出任务信息列表 */
   @PreAuthorize("@ss.hasPermi('coalition:formation:export')")
   @Log(title = "任务信息", businessType = BusinessType.EXPORT)
@@ -77,7 +75,7 @@ public class TaskAllController extends BaseController {
     taskAll.setArrivalTime(new Date());
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     LoginUser userLogin = (LoginUser) authentication.getPrincipal();
-    taskAll.setCompanyId(userLogin.getUserId());
+    taskAll.setCompanyId(userLogin.getUserId().intValue());
     return toAjax(taskAllService.insertTaskAll(taskAll));
   }
 

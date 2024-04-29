@@ -5,5 +5,5 @@ import com.ruoyi.project.coalitionformation.entity.Resource;
 import java.util.List;
 
 public interface CoalitionTaskService {
-    Integer allocate(Integer taskId, List<Resource> resourceList);
+    Integer allocate(Integer taskId,Integer taskType, List<Resource> resourceList);
 }

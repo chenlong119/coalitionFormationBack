@@ -1,8 +1,9 @@
 package com.ruoyi.project.generate.taskcoalition.mapper;
 
-import com.ruoyi.project.generate.domain.TaskAll;
-import java.util.List;
+import com.ruoyi.project.generate.taskcoalition.domain.TaskAll;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * 任务信息Mapper接口
@@ -15,9 +16,11 @@ public interface TaskAllMapper {
   @Select("select  layer_id  from company_all where id=#{companyId}")
   List<Integer> getChainIdsByCompanyId(Integer companyId);
 
+  @Select("select * from `ry-vue`.task_all where chain_id=#{chainId}")
+  public List<TaskAll> getChainTask(Integer chainId);
+
   @Select("select * from `ry-vue`.task_all")
   public List<TaskAll> getAllTask();
-
   /**
    * 查询任务信息
    *
@@ -71,4 +74,6 @@ public interface TaskAllMapper {
 
   @Select("select  * from `ry-vue`.task_all where id=#{id}")
   TaskAll getOne(Integer id);
+
+  void deleteTaskResource(Long[] ids);
 }

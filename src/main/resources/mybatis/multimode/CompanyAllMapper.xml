@@ -8,14 +8,14 @@
         <result property="id" column="id" />
         <result property="name" column="name" />
         <result property="layerId" column="layer_id" />
-        <result property="chainName" column="chain_name" />
+        <result property="companyType" column="company_type" />
         <result property="groupId" column="group_id" />
         <result property="processRate" column="process_rate" />
         <result property="status" column="status" />
     </resultMap>
 
     <select id="selectAllCompanies" resultMap="CompanyResult">
-        SELECT DISTINCT id,name,layer_id,group_id,process_rate,status FROM company_all;
+        SELECT id,name,layer_id,company_type,group_id,process_rate,status FROM company_all;
     </select>
 
     <select id="findCompanyNameById" resultType="string">

@@ -7,9 +7,10 @@ import java.math.BigDecimal;
 @Data
 public class RelatedCompanyDTO {
     private Integer companyId;
-    private String name;
+    private Integer layerId;
+    private String chainName;
     private String field;
-    private String category;
+    private String name;
     private Double marketShare;
     private Double marketIncrease;
     private Double turnover;

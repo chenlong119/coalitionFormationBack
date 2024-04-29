@@ -46,9 +46,10 @@ public class IncomeServiceImpl implements IncomeService {
         for (RelatedCompanyDTO relatedCompany : relatedCompanyList) {
             Map<String, Object> relatedCompanyMap = new HashMap<>();
             relatedCompanyMap.put("companyId", relatedCompany.getCompanyId());
-            relatedCompanyMap.put("name", relatedCompany.getName());
+            relatedCompanyMap.put("layerId", relatedCompany.getLayerId());
+            relatedCompanyMap.put("chainName", relatedCompany.getChainName());
             relatedCompanyMap.put("field", relatedCompany.getField());
-            relatedCompanyMap.put("category", relatedCompany.getCategory());
+            relatedCompanyMap.put("name", relatedCompany.getName());
             relatedCompanyMap.put("marketShare", relatedCompany.getMarketShare());
             relatedCompanyMap.put("marketIncrease", relatedCompany.getMarketIncrease());
             relatedCompanyMap.put("turnover", relatedCompany.getTurnover());

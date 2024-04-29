@@ -8,9 +8,10 @@ import java.math.BigDecimal;
 @Data
 public class IncomeDTO {
     private Integer companyId;
+    private Integer layerId;
+    private String chainName;
     private String name;
     private String field;
-    private String category;
     private Double marketShare;
     private Double marketIncrease;
     private Double turnover;

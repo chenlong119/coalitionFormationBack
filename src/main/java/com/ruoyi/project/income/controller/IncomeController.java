@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ruoyi.project.income.dto.*;
 import com.ruoyi.project.income.service.IncomeService;
-import com.ruoyi.project.income.service.impl.NodeCoordinateGenerator;
+//import com.ruoyi.project.income.service.impl.NodeCoordinateGenerator;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -81,47 +81,13 @@ public class IncomeController {
     return relatedCompanyList;
   }
 
-  /** 获取关系图中的所有企业节点（自动生成节点坐标） */
-  @PostMapping(value = "/getAllNode")
-  public List<GraphNodeDTO> getAllNode(@RequestBody String jsonPoints)
-      throws JsonProcessingException {
-    ObjectMapper objectMapper = new ObjectMapper();
-    Point2[] points = objectMapper.readValue(jsonPoints, Point2[].class); // 左上，右上，右下，左下
-
-    List<GraphNodeDTO> NodeList = new ArrayList<>();
-    NodeList = incomeService.getAllNode();
-    // 创建节点坐标生成器实例
-    NodeCoordinateGenerator coordinateGenerator = new NodeCoordinateGenerator();
-    List<GraphNodeDTO> newNodeList = new ArrayList<>();
-    getPointsArray(points);
-    // 生成节点坐标
-    newNodeList = coordinateGenerator.generateCoordinates(NodeList, getPointsArray(points));
-    logger.info("newNodeList",newNodeList);
-    return newNodeList;
+  /** 获取关系图中的所有企业节点 */
+  @GetMapping(value = "/getAllNode")
+  public List<GraphNodeDTO> getAllNode(){
+      List<GraphNodeDTO> graphNode = null;
+      graphNode = incomeService.getAllNode();
+      return graphNode;
   }
-
-  private double[][] getPointsArray(Point2[] points) {
-    double[][] pointsArray = new double[points.length][4];
-    for (int i = 0; i < points.length; i++) {
-      double[] point = new double[4];
-      double[][] pointValues = points[i].getPoints();
-
-      // 获取左上角和右下角的坐标值
-      double minX = pointValues[0][0];
-      double minY = pointValues[0][1];
-      double maxX = pointValues[2][0];
-      double maxY = pointValues[2][1];
-
-      // 赋值给子数组
-      point[0] = minX;
-      point[1] = minY;
-      point[2] = maxX;
-      point[3] = maxY;
-      pointsArray[i] = point;
-    }
-    return pointsArray;
-  }
-
 
   /** 获取关系图中的所有连接 */
   @GetMapping(value = "/getAllLink")
@@ -130,6 +96,51 @@ public class IncomeController {
     LinkList = incomeService.getAllLink();
     return LinkList;
   }
+
+
+//
+//  /** 获取关系图中的所有企业节点（自动生成节点坐标） */
+//  @PostMapping(value = "/getAllNode")
+//  public List<GraphNodeDTO> getAllNode(@RequestBody String jsonPoints)
+//      throws JsonProcessingException {
+//    ObjectMapper objectMapper = new ObjectMapper();
+//    Point2[] points = objectMapper.readValue(jsonPoints, Point2[].class); // 左上，右上，右下，左下
+//
+//    List<GraphNodeDTO> NodeList = new ArrayList<>();
+//    NodeList = incomeService.getAllNode();
+//    // 创建节点坐标生成器实例
+//    NodeCoordinateGenerator coordinateGenerator = new NodeCoordinateGenerator();
+//    List<GraphNodeDTO> newNodeList = new ArrayList<>();
+//    getPointsArray(points);
+//    // 生成节点坐标
+//    newNodeList = coordinateGenerator.generateCoordinates(NodeList, getPointsArray(points));
+//    logger.info("newNodeList",newNodeList);
+//    return newNodeList;
+//  }
+//
+//  private double[][] getPointsArray(Point2[] points) {
+//    double[][] pointsArray = new double[points.length][4];
+//    for (int i = 0; i < points.length; i++) {
+//      double[] point = new double[4];
+//      double[][] pointValues = points[i].getPoints();
+//
+//      // 获取左上角和右下角的坐标值
+//      double minX = pointValues[0][0];
+//      double minY = pointValues[0][1];
+//      double maxX = pointValues[2][0];
+//      double maxY = pointValues[2][1];
+//
+//      // 赋值给子数组
+//      point[0] = minX;
+//      point[1] = minY;
+//      point[2] = maxX;
+//      point[3] = maxY;
+//      pointsArray[i] = point;
+//    }
+//    return pointsArray;
+//  }
+//
+//
 
 
 

@@ -4,122 +4,267 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.project.income.mapper.IncomeMapper">
 
-<!--    <select id="queryCompanyNow" parameterType="String" resultType="com.ruoyi.project.income.dto.CompanyUser">-->
-<!--        select user_id, user_name, nick_name from sys_user where user_name = #{username}-->
+    <!--    <select id="queryCompanyNow" parameterType="String" resultType="com.ruoyi.project.income.dto.CompanyUser">-->
+    <!--        select user_id, user_name, nick_name from sys_user where user_name = #{username}-->
+    <!--    </select>-->
+
+
+<!--    <select id="queryAll" resultType="com.ruoyi.project.income.dto.IncomeDTO">-->
+<!--        SELECT a.id as companyId, a.layer_id, c.name AS chain_name, a.name, a.company_type as field,-->
+<!--               b.market_share, b.market_increase, b.turnover, b.delivery_rate, b.profitability as earningsRate,-->
+<!--               b.average_roi, b.liability, b.owner_equity-->
+<!--        FROM (-->
+<!--                 SELECT DISTINCT id, layer_id, company_type, name-->
+<!--                 FROM company_all-->
+<!--             ) a-->
+<!--                 INNER JOIN company_income b ON a.id = b.id-->
+<!--                 INNER JOIN chain c ON a.layer_id = c.id-->
 <!--    </select>-->
 
     <select id="queryAll" resultType="com.ruoyi.project.income.dto.IncomeDTO">
-        SELECT a.id as companyId, a.name, a.company_type as field, a.chain_name as category,
-               b.market_share, b.market_increase, b.turnover, b.delivery_rate, b.profitability as earningsRate,
-               b.average_roi, b.liability, b.owner_equity
+        SELECT
+            a.id AS companyId,
+            MAX(a.layer_id) AS layer_id,
+            MIN(c.name) AS chain_name,
+            MIN(a.name) AS name,
+            MIN(a.company_type) AS field,
+            MIN(b.market_share) AS market_share,
+            MIN(b.market_increase) AS market_increase,
+            MIN(b.turnover) AS turnover,
+            MIN(b.delivery_rate) AS delivery_rate,
+            MIN(b.profitability) AS earningsRate,
+            MIN(b.average_roi) AS average_roi,
+            MIN(b.liability) AS liability,
+            MIN(b.owner_equity) AS owner_equity
         FROM (
-                 SELECT DISTINCT id, name, company_type, chain_name
+                 SELECT DISTINCT id, layer_id, company_type, name
                  FROM company_all
              ) a
                  INNER JOIN company_income b ON a.id = b.id
+                 INNER JOIN chain c ON a.layer_id = c.id
+        GROUP BY a.id
     </select>
 
-        <select id="queryCompanyById" resultType="com.ruoyi.project.income.dto.IncomeDTO">
-            SELECT a.id as companyId, a.name, a.company_type as field, a.chain_name as category,
-                   b.market_share, b.market_increase, b.turnover, b.delivery_rate, b.profitability as earningsRate,
-                   b.average_roi, b.liability, b.owner_equity
-            FROM (
-                     SELECT DISTINCT id, name, company_type, chain_name
-                     FROM company_all
-                     WHERE id = #{companyId}
-                 ) a
-                     INNER JOIN company_income b ON a.id = b.id
-        </select>
+    <select id="queryCompanyById" resultType="com.ruoyi.project.income.dto.IncomeDTO">
+        SELECT a.id as companyId, a.layer_id, c.name AS chain_name, a.name, a.company_type as field,
+               b.market_share, b.market_increase, b.turnover, b.delivery_rate, b.profitability as earningsRate,
+               b.average_roi, b.liability, b.owner_equity
+        FROM (
+                 SELECT DISTINCT id, layer_id, company_type, name
+                 FROM company_all
+                 WHERE id = #{companyId}
+             ) a
+                 INNER JOIN company_income b ON a.id = b.id
+                 INNER JOIN chain c ON a.layer_id = c.id
+    </select>
 
-        <select id="queryRelatedCompany" parameterType="Integer" resultType="com.ruoyi.project.income.dto.RelatedCompanyDTO">
-            SELECT
-                ca.id as companyId,
-                ca.name,
-                ca.company_type as field,
-                ca.chain_name as category,
-                ci.market_share,
-                ci.market_increase,
-                ci.turnover,
-                ci.delivery_rate,
-                ci.profitability as earningsRate,
-                ci.average_roi,
-                ci.liability,
-                ci.owner_equity,
-                cr.is_supply,
-                cr.is_cooperation,
-                cr.is_competition,
-                cr.total_relation,
-                cr.analysis
-            FROM
-                company_income ci
-                    INNER JOIN (
-                    SELECT
-                        CASE
-                            WHEN source_id = 1 THEN target_id
-                            WHEN target_id = 1 THEN source_id
-                            END AS related_companyId,
-                        MAX(is_supply) AS is_supply,
-                        MAX(is_cooperation) AS is_cooperation,
-                        MAX(is_competition) AS is_competition,
-                        MAX(total_relation) AS total_relation,
-                        MAX(analysis) AS analysis
-                    FROM
-                        company_relation_total
-                    WHERE
-                        source_id = 1 OR target_id = 1
-                    GROUP BY
-                        related_companyId
-                ) cr ON ci.id = cr.related_companyId
-                    INNER JOIN (
-                    SELECT
-                        id,
-                        MAX(name) AS name,
-                        MAX(company_type) AS company_type,
-                        MAX(chain_name) AS chain_name
-                    FROM
-                        company_all
-                    GROUP BY
-                        id
-                ) ca ON cr.related_companyId = ca.id;
-        </select>
+    <select id="queryRelatedCompany" parameterType="Integer" resultType="com.ruoyi.project.income.dto.RelatedCompanyDTO">
+        SELECT
+            ca.id as companyId,
+            ca.layer_id,
+            c.name as chain_name,
+            ca.company_type as field,
+            ca.name,
+            ci.market_share,
+            ci.market_increase,
+            ci.turnover,
+            ci.delivery_rate,
+            ci.profitability as earningsRate,
+            ci.average_roi,
+            ci.liability,
+            ci.owner_equity,
+            cr.is_supply,
+            cr.is_cooperation,
+            cr.is_competition,
+            cr.total_relation,
+            cr.analysis
+        FROM
+            company_income ci
+                INNER JOIN (
+                SELECT
+                    CASE
+                        WHEN source_id = 1 THEN target_id
+                        WHEN target_id = 1 THEN source_id
+                        END AS related_companyId,
+                    MAX(is_supply) AS is_supply,
+                    MAX(is_cooperation) AS is_cooperation,
+                    MAX(is_competition) AS is_competition,
+                    MAX(total_relation) AS total_relation,
+                    MAX(analysis) AS analysis
+                FROM
+                    company_relation_total
+                WHERE
+                    source_id = 1 OR target_id = 1
+                GROUP BY
+                    related_companyId
+            ) cr ON ci.id = cr.related_companyId
+                INNER JOIN (
+                SELECT
+                    id,
+                    MAX(name) AS name,
+                    MAX(company_type) AS company_type,
+                    MAX(layer_id) AS layer_id
+                FROM
+                    company_all
+                GROUP BY
+                    id
+            ) ca ON cr.related_companyId = ca.id
+                LEFT JOIN chain c ON ca.layer_id = c.id;
+
+    </select>
 
     <select id="queryAllNode" resultType="com.ruoyi.project.income.dto.GraphNodeDTO">
         SELECT
             cl.location_id,
-            ca.id AS companyId,
-            ca.name,
-            ca.company_type AS field,
-            ca.chain_name AS category,
-            cl.layer,
-            cl.location_x,
-            cl.location_y
+            MIN(ca.id) AS companyId, -- 使用 MIN() 聚合函数选择一个 id 进行输出
+            MAX(ca.layer_id) AS layer_id, -- 使用 MAX() 聚合函数选择一个 layer_id 进行输出
+            MIN(ca.company_type) AS field, -- 使用 MIN() 聚合函数选择一个 company_type 进行输出
+            MIN(ca.name) AS name, -- 使用 MIN() 聚合函数选择一个 name 进行输出
+            MIN(cl.layer_relation) AS layer_relation, -- 使用 MIN() 聚合函数选择一个 layer_relation 进行输出
+            MIN(cl.location_x) AS location_x, -- 使用 MIN() 聚合函数选择一个 location_x 进行输出
+            MIN(cl.location_y) AS location_y -- 使用 MIN() 聚合函数选择一个 location_y 进行输出
         FROM
             (
-                SELECT DISTINCT id, name, company_type, chain_name
+                SELECT DISTINCT id, layer_id, company_type, name
                 FROM company_all
-            ) ca,
-            company_location_income cl
-        WHERE
-            ca.id = cl.company_id
+            ) ca
+                JOIN company_location_income cl ON ca.id = cl.company_id
+        GROUP BY cl.location_id
     </select>
 
-        <select id="queryAllLink" resultType="com.ruoyi.project.income.dto.GraphLinkDTO">
-            SELECT
-                cl1.location_id-1 AS source_location,
-                cl2.location_id-1 AS target_location,
-                l.relation,
-                mr.strength
-            FROM
-                multiplex_relationship mr
-            LEFT JOIN
-                company_location_income cl1 ON mr.company1_id = cl1.company_id AND mr.layer_id = cl1.layer
-            LEFT JOIN
-                company_location_income cl2 ON mr.company2_id = cl2.company_id AND mr.layer_id = cl2.layer
-            LEFT JOIN
-                layer l ON mr.layer_id = l.id
-            WHERE
-                mr.company1_id &lt;= 20 AND mr.company2_id &lt;= 20;
-        </select>
+
+
+    <select id="queryAllLink" resultType="com.ruoyi.project.income.dto.GraphLinkDTO">
+        SELECT
+            cl1.location_id-1 AS source_location,
+            cl2.location_id-1 AS target_location,
+            mr.layer_id AS layer_relation,
+            mr.strength
+        FROM
+            multiplex_relationship_1 mr
+                LEFT JOIN
+            company_location_income cl1 ON mr.company1_id = cl1.company_id AND mr.layer_id = cl1.layer_relation
+                LEFT JOIN
+            company_location_income cl2 ON mr.company2_id = cl2.company_id AND mr.layer_id = cl2.layer_relation
+        WHERE
+            mr.company1_id &lt;= 30 AND mr.company2_id &lt;= 30;
+    </select>
+
+
+
+
+<!--    <select id="queryAll" resultType="com.ruoyi.project.income.dto.IncomeDTO">-->
+<!--        SELECT a.id as companyId, a.name, a.company_type as field, a.layer_id-->
+<!--               b.market_share, b.market_increase, b.turnover, b.delivery_rate, b.profitability as earningsRate,-->
+<!--               b.average_roi, b.liability, b.owner_equity-->
+<!--        FROM (-->
+<!--                 SELECT DISTINCT id,  layer_id, company_type, name-->
+<!--                 FROM company_all-->
+<!--             ) a-->
+<!--                 INNER JOIN company_income b ON a.id = b.id-->
+<!--    </select>-->
+
+<!--        <select id="queryCompanyById" resultType="com.ruoyi.project.income.dto.IncomeDTO">-->
+<!--            SELECT a.id as companyId, a.name, a.company_type as field, a.chain_name as category,-->
+<!--                   b.market_share, b.market_increase, b.turnover, b.delivery_rate, b.profitability as earningsRate,-->
+<!--                   b.average_roi, b.liability, b.owner_equity-->
+<!--            FROM (-->
+<!--                     SELECT DISTINCT id, name, company_type, chain_name-->
+<!--                     FROM company_all-->
+<!--                     WHERE id = #{companyId}-->
+<!--                 ) a-->
+<!--                     INNER JOIN company_income b ON a.id = b.id-->
+<!--        </select>-->
+
+<!--        <select id="queryRelatedCompany" parameterType="Integer" resultType="com.ruoyi.project.income.dto.RelatedCompanyDTO">-->
+<!--            SELECT-->
+<!--                ca.id as companyId,-->
+<!--                ca.name,-->
+<!--                ca.company_type as field,-->
+<!--                ca.chain_name as category,-->
+<!--                ci.market_share,-->
+<!--                ci.market_increase,-->
+<!--                ci.turnover,-->
+<!--                ci.delivery_rate,-->
+<!--                ci.profitability as earningsRate,-->
+<!--                ci.average_roi,-->
+<!--                ci.liability,-->
+<!--                ci.owner_equity,-->
+<!--                cr.is_supply,-->
+<!--                cr.is_cooperation,-->
+<!--                cr.is_competition,-->
+<!--                cr.total_relation,-->
+<!--                cr.analysis-->
+<!--            FROM-->
+<!--                company_income ci-->
+<!--                    INNER JOIN (-->
+<!--                    SELECT-->
+<!--                        CASE-->
+<!--                            WHEN source_id = 1 THEN target_id-->
+<!--                            WHEN target_id = 1 THEN source_id-->
+<!--                            END AS related_companyId,-->
+<!--                        MAX(is_supply) AS is_supply,-->
+<!--                        MAX(is_cooperation) AS is_cooperation,-->
+<!--                        MAX(is_competition) AS is_competition,-->
+<!--                        MAX(total_relation) AS total_relation,-->
+<!--                        MAX(analysis) AS analysis-->
+<!--                    FROM-->
+<!--                        company_relation_total-->
+<!--                    WHERE-->
+<!--                        source_id = 1 OR target_id = 1-->
+<!--                    GROUP BY-->
+<!--                        related_companyId-->
+<!--                ) cr ON ci.id = cr.related_companyId-->
+<!--                    INNER JOIN (-->
+<!--                    SELECT-->
+<!--                        id,-->
+<!--                        MAX(name) AS name,-->
+<!--                        MAX(company_type) AS company_type,-->
+<!--                        MAX(chain_name) AS chain_name-->
+<!--                    FROM-->
+<!--                        company_all-->
+<!--                    GROUP BY-->
+<!--                        id-->
+<!--                ) ca ON cr.related_companyId = ca.id;-->
+<!--        </select>-->
+
+<!--    <select id="queryAllNode" resultType="com.ruoyi.project.income.dto.GraphNodeDTO">-->
+<!--        SELECT-->
+<!--            cl.location_id,-->
+<!--            ca.id AS companyId,-->
+<!--            ca.name,-->
+<!--            ca.company_type AS field,-->
+<!--            ca.chain_name AS category,-->
+<!--            cl.layer,-->
+<!--            cl.location_x,-->
+<!--            cl.location_y-->
+<!--        FROM-->
+<!--            (-->
+<!--                SELECT DISTINCT id, name, company_type, chain_name-->
+<!--                FROM company_all-->
+<!--            ) ca,-->
+<!--            company_location_income cl-->
+<!--        WHERE-->
+<!--            ca.id = cl.company_id-->
+<!--    </select>-->
+
+<!--        <select id="queryAllLink" resultType="com.ruoyi.project.income.dto.GraphLinkDTO">-->
+<!--            SELECT-->
+<!--                cl1.location_id-1 AS source_location,-->
+<!--                cl2.location_id-1 AS target_location,-->
+<!--                l.relation,-->
+<!--                mr.strength-->
+<!--            FROM-->
+<!--                multiplex_relationship mr-->
+<!--            LEFT JOIN-->
+<!--                company_location_income cl1 ON mr.company1_id = cl1.company_id AND mr.layer_id = cl1.layer-->
+<!--            LEFT JOIN-->
+<!--                company_location_income cl2 ON mr.company2_id = cl2.company_id AND mr.layer_id = cl2.layer-->
+<!--            LEFT JOIN-->
+<!--                layer l ON mr.layer_id = l.id-->
+<!--            WHERE-->
+<!--                mr.company1_id &lt;= 20 AND mr.company2_id &lt;= 20;-->
+<!--        </select>-->
 
 
 

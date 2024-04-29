@@ -6,6 +6,6 @@ import lombok.Data;
 public class GraphLinkDTO {
     private int sourceLocation;
     private int targetLocation;
-    private String relation;
+    private int layerRelation;
     private double strength;
 }

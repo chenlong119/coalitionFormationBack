@@ -6,6 +6,7 @@
 
     <resultMap id="TaskResult" type="com.ruoyi.project.multimode.domain.TaskAll2">
         <result property="id" column="id" />
+        <result property="taskType" column="task_type" />
         <result property="name" column="name" />
         <result property="val" column="val" />
         <result property="arrivalTime" column="arrival_time" />
@@ -15,6 +16,7 @@
         <result property="duration" column="duration" />
         <result property="productId" column="product_id" />
         <result property="coalitionId" column="coalition_id" />
+        <result property="chainId" column="chain_id" />
     </resultMap>
 
     <select id="selectActiveTasks" resultMap="TaskResult">
@@ -23,6 +25,14 @@
 
     <select id="findTaskNameById" resultType="string">
         SELECT name FROM task_all WHERE id = #{taskId}
+    </select>
+
+    <select id="findTaskTypeById" resultType="string">
+        SELECT taskType FROM task_all WHERE id = #{taskId}
+    </select>
+
+    <select id="findChainTypeById" resultType="string">
+        SELECT chainId FROM task_all WHERE id = #{taskId}
     </select>
 
 </mapper>

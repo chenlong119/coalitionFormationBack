@@ -240,6 +240,7 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+
 <!--        cj的两个jar包-->
         <dependency>
             <groupId>com.chenlong</groupId>
@@ -251,6 +252,7 @@
             <artifactId>javabuilder</artifactId>
             <version>1.0.0</version>
         </dependency>
+
 
     </dependencies>
 

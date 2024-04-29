@@ -9,7 +9,6 @@
         <result property="layerId" column="layer_id"/>
         <result property="address" column="address"/>
         <result property="companyType" column="company_type"/>
-        <result property="chainName" column="chain_name"/>
         <result property="groupId" column="group_id"/>
         <result property="processRate" column="process_rate"/>
         <result property="rep" column="rep"/>
@@ -22,8 +21,8 @@
                layer_id,
                address,
                company_type,
-               chain_name,
                coalition_id,
+                company_type,
                process_rate,
                rep,
                status
@@ -36,17 +35,17 @@
             <if test="name != null  and name != ''">
                 and name like concat('%', #{name}, '%')
             </if>
-            <if test="address != null  and address != ''">
-                and address like concat('%', #{address}, '%')
+            <if test="id != null  and id != ''">
+                and id=#{id}
             </if>
-            <if test="chainName != null  and chainName != ''">
-                and chain_name like concat('%', #{chainName}, '%')
-            </if>
-            <if test="coalitionId != null ">
-                and coalition_id = #{coalitionId}
+            <if test="layerId != null ">
+                and layer_id = #{layerId}
             </if>
             <if test="status != null ">
                 and status = #{status}
+            </if>
+            <if test="companyType != null ">
+                and company_type = #{companyType}
             </if>
         </where>
     </select>

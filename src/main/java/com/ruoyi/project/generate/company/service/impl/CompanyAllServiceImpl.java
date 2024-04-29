@@ -3,10 +3,12 @@ package com.ruoyi.project.generate.company.service.impl;
 import com.ruoyi.project.coalitionformation.entity.Resource;
 import com.ruoyi.project.coalitionformation.mapper.ResourceMapper;
 import com.ruoyi.project.generate.company.domain.CompanyAll;
+import com.ruoyi.project.generate.company.domain.CompanyCoalition;
 import com.ruoyi.project.generate.company.mapper.CompanyAllMapper;
 import com.ruoyi.project.generate.company.service.ICompanyAllService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,7 +44,7 @@ public class CompanyAllServiceImpl implements ICompanyAllService {
   @Override
   public List<CompanyAll> selectCompanyAllList(CompanyAll companyAll) {
     List<CompanyAll> allList = companyAllMapper.selectCompanyAllList(companyAll);
-    allList.stream()
+    allList
         .forEach(
             company -> {
               String chainName =
@@ -60,6 +62,11 @@ public class CompanyAllServiceImpl implements ICompanyAllService {
    */
   @Override
   public int insertCompanyAll(CompanyAll companyAll) {
+    if(companyAll.getId()==null)
+    {
+      Integer maxId = companyAllMapper.getMaxId();
+        companyAll.setId(maxId+1);
+    }
     return companyAllMapper.insertCompanyAll(companyAll);
   }
 
@@ -81,7 +88,13 @@ public class CompanyAllServiceImpl implements ICompanyAllService {
    * @return 结果
    */
   @Override
+  @Transactional
   public int deleteCompanyAllByIds(Long[] ids) {
+    for(Long id:ids)
+    {
+      companyAllMapper.deleteCompanyRelation(id);
+    }
+    companyAllMapper.deleteCompanyResource(ids);
     return companyAllMapper.deleteCompanyAllByIds(ids);
   }
 
@@ -92,7 +105,9 @@ public class CompanyAllServiceImpl implements ICompanyAllService {
    * @return 结果
    */
   @Override
+  @Transactional
   public int deleteCompanyAllById(Long id) {
+    companyAllMapper.deleteCompanyRelation(id);
     return companyAllMapper.deleteCompanyAllById(id);
   }
 
@@ -113,7 +128,7 @@ public class CompanyAllServiceImpl implements ICompanyAllService {
     return companyAllMapper.getNamesByIds(tmp);
   }
 
-  public boolean compareResource(Map<Integer,Integer> target, Map<Integer,Integer> cur )
+  private boolean reduceResource(Map<Integer,Integer> target, Map<Integer,Integer> cur )
   {
     Set<Integer> tmp=new HashSet<>();
     tmp.addAll(target.keySet());
@@ -129,40 +144,103 @@ public class CompanyAllServiceImpl implements ICompanyAllService {
     return true;
   }
 
+  private boolean preCheck(Map<Integer, Integer> resourceMap, Map<Integer, Integer> allIdleCompanyResource) {
+    Set<Integer> tmp=new HashSet<>();
+    tmp.addAll(resourceMap.keySet());
+    tmp.retainAll(allIdleCompanyResource.keySet());
+    if(tmp.size()<resourceMap.size())
+      return false;
+    for(Integer key: tmp)
+    {
+      if(allIdleCompanyResource.get(key)<resourceMap.get(key))
+        return false;
+    }
+    return true;
+  }
+
+  private Map<Integer,Integer> resourcelistToMap(List<Resource> resources)
+  {
+    Map<Integer,Integer> res=new HashMap<>();
+    resources.forEach(resource -> {
+      Integer resourceId = resource.getId();
+      res.putIfAbsent(resourceId,0);
+      res.put(resourceId,res.get(resourceId)+resource.getNum());
+    });
+    return res;
+  }
+
+  private double getSatisfyRate(Map<Integer,Integer> resourceMap, Map<Integer,Integer> companyResource)
+  {
+    double sum=0;
+    for(Integer key:resourceMap.keySet())
+    {
+      if(companyResource.containsKey(key))
+        sum+=Math.min(1,companyResource.get(key)*1.0/resourceMap.get(key));
+    }
+    return sum;
+  }
+
   @Override
-  public List<CompanyAll> getCompanyByResource(List<Resource> resources) {
+  public List<CompanyAll> getCompanyByResource(List<Resource> resources,Integer taskType) {
     Map<Integer, Integer> resourceMap = resources.stream().collect(Collectors.toMap(Resource::getId, Resource::getNum));
-    List<CompanyAll> allIdleCompany = companyAllMapper.getAllIdleCompany();
-    int size=allIdleCompany.size();
+    List<CompanyAll> allIdleCompany = companyAllMapper.getAllIdleCompany(taskType);
+    if(allIdleCompany.size()==0)
+      return null;
+    Map<Integer,Integer> allIdleCompanyResource=new HashMap<>();
+    Map<String,Map<Integer,Integer>> memo=new HashMap<>();
+    allIdleCompany.forEach(company->{
+      List<Resource> companyResource = resourceMapper.getCompanyResource(company.getId(),company.getLayerId());
+      String key=company.getId()+"_"+company.getLayerId();
+      memo.put(key,resourcelistToMap(companyResource));
+      companyResource.forEach(resource -> {
+        Integer resourceId = resource.getId();
+        allIdleCompanyResource.putIfAbsent(resourceId,0);
+        allIdleCompanyResource.put(resourceId,allIdleCompanyResource.get(resourceId)+resource.getNum());
+      });
+    });
+    boolean isSat=preCheck(resourceMap,allIdleCompanyResource);
+    if(!isSat)
+      return null;
     List<CompanyAll> res=new ArrayList<>();
-    Set<String> visited=new HashSet<>();
     while(!resourceMap.isEmpty())
     {
-      int index=(int)(Math.random()*size);
-      CompanyAll selectCompany = allIdleCompany.get(index);
-      String key=selectCompany.getId()+" "+selectCompany.getLayerId();
-      if(visited.contains(key))
-      {
-        continue;
-      }
-      visited.add(key);
-      List<Resource> companyResource = resourceMapper.getCompanyResource(selectCompany.getId().intValue(), selectCompany.getLayerId().intValue());
-      Map<Integer, Integer> companyResourceMap = companyResource.stream().collect(Collectors.toMap(Resource::getId, Resource::getNum));
-      if(compareResource(resourceMap,companyResourceMap))
-      {
-        res.add(selectCompany);
-      }
+//   按照满足度由大到小排序
+        allIdleCompany.sort((o1, o2) -> {
+          String k1=o1.getId()+"_"+o1.getLayerId();
+            String k2=o2.getId()+"_"+o2.getLayerId();
+            double rate1 = getSatisfyRate(resourceMap, memo.get(k1));
+            double rate2 = getSatisfyRate(resourceMap, memo.get(k2));
+            return Double.compare(rate2, rate1);
+        });
+        CompanyAll company = allIdleCompany.get(0);
+        Map<Integer,Integer> companyResource=memo.get(company.getId()+"_"+company.getLayerId());
+        if(reduceResource(resourceMap,companyResource))
+        {
+            res.add(company);
+        }
+        allIdleCompany.remove(0);
     }
     return res;
   }
 
+
   @Override
-  public List<CompanyAll> getCompanyByCoalition(Long coalitionId) {
+  public List<CompanyCoalition> getCompanyByCoalition(Integer coalitionId) {
     return companyAllMapper.getCompanyByCoalition(coalitionId);
   }
 
   @Override
   public List<CompanyAll> getAllCompany() {
     return companyAllMapper.getAllCompany();
+  }
+
+  @Override
+  public void insertCompanyCoalition(CompanyCoalition companyCoalition) {
+    companyAllMapper.insertCompanyCoalition(companyCoalition);
+  }
+
+  @Override
+  public List<CompanyCoalition> getallCoalition() {
+    return companyAllMapper.getAllCoalition();
   }
 }

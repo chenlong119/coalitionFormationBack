@@ -7,7 +7,8 @@ public class CompanyAll2 {
     private Integer id;
     private String name;
     private Integer layerId;
-    private String chainName;
+    private Integer companyType;
+    //private String chainName;
     private Integer groupId;
     private Integer processRate;
     private Integer status;

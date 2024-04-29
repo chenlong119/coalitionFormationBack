@@ -7,8 +7,8 @@
     <resultMap id="ModeResult" type="com.ruoyi.project.multimode.domain.Mode">
         <result property="mode" column="mode" />
         <result property="modeName" column="mode_name" />
-        <result property="competitionNum" column="competition_rate" />
-        <result property="failureNum" column="failure_rate" />
+        <result property="competitionNum" column="competition_num" />
+        <result property="failureNum" column="failure_num" />
     </resultMap>
 
     <select id="findModeById" parameterType="java.lang.Integer" resultMap="ModeResult">

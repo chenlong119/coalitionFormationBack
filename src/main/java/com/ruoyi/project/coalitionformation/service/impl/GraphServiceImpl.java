@@ -14,19 +14,19 @@ public class GraphServiceImpl implements GraphService {
   @Autowired GraphMapper graphMapper;
 
   @Override
-  public List<CompanyNode> getNodes() {
-    List<CompanyNode> nodes = graphMapper.getNodes();
+  public List<CompanyNode> getNodes(Integer companyType) {
+    List<CompanyNode> nodes = graphMapper.getNodes(companyType);
     return nodes;
   }
 
   @Override
-  public List<CompanyEdge> getEdges() {
-    return graphMapper.getEdges();
+  public List<CompanyEdge> getEdges(Integer linkType) {
+    return graphMapper.getEdges(linkType);
   }
 
   @Override
-  public void addRelation(Integer id1, String id2s, Integer layer) {
+  public void addRelation(Integer id1, String id2s, Integer layer,Integer companyType) {
     String[] split = id2s.split(",");
-    for (String id2 : split) graphMapper.addRelation(id1, Integer.valueOf(id2), layer);
+    for (String id2 : split) graphMapper.addRelation(id1, Integer.valueOf(id2), layer,companyType);
   }
 }

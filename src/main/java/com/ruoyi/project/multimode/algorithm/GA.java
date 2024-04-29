@@ -1001,16 +1001,24 @@ public class GA {
         // 调用 calculate 方法并处理返回的 CalculationResult
         CalculationResult calculateResults = calculate(job, machine, machineTime, machineCost);
         double finalFinish = calculateResults.finalFinish;
-        List<Double> listS = calculateResults.startTimes;
-        List<Double> listW = calculateResults.workTimes;
-        CompanyAll2 selectedCompany = companies.get(random.nextInt(companies.size()));
-        Integer companyId = selectedCompany.getId();
-        System.out.println(arriveTime);
-        System.out.println(arriveTime.size());
         TaskAll2 selectedTask = tasks.get(random.nextInt(tasks.size()));
         Integer taskId = selectedTask.getId();
-        CompanyAll2 selectedCompany1 = companies.get(random.nextInt(companies.size()));
-        Integer companyId1 = selectedCompany.getId();
+        //System.out.println("taskId"+ taskId);
+        Integer taskType = selectedTask.getTaskType();
+        Integer taskChainId = selectedTask.getChainId();
+        //System.out.println("taskType"+ taskType);
+        //System.out.println("taskChainId"+ taskChainId);
+        List<CompanyAll2> matchingCompanies = findMatchingCompanies(companies, taskType, taskChainId);
+        List<Double> listS = calculateResults.startTimes;
+        List<Double> listW = calculateResults.workTimes;
+        CompanyAll2 selectedCompany = matchingCompanies.get(random.nextInt(matchingCompanies.size()));
+        Integer companyId = selectedCompany.getId();
+        //System.out.println("companyId"+ companyId);
+        System.out.println(arriveTime);
+        System.out.println(arriveTime.size());
+        CompanyAll2 selectedCompany1 = matchingCompanies.get(random.nextInt(matchingCompanies.size()));
+        Integer companyId1 = selectedCompany1.getId();
+        //System.out.println("companyId1"+ companyId1);
         if (begin!=1) {
             for (int k = 0; k < arriveTime.size(); k++) {
                 double time = k == 0 ? arriveTime.get(k) : arriveTime.get(k) - arriveTime.get(k - 1);
@@ -1364,6 +1372,12 @@ public class GA {
         } else {
             return 0.0; // 或者抛出一个异常
         }
+    }
+    private  List <CompanyAll2> findMatchingCompanies(List <CompanyAll2> companies, Integer taskType, Integer taskChainId){
+        return companies.stream()
+                .filter(company -> company.getCompanyType().equals(taskType) && company.getLayerId().equals(taskChainId))
+                .collect(Collectors.toList());
+
     }
 
 }

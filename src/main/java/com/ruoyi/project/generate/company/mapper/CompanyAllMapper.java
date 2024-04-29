@@ -1,6 +1,9 @@
 package com.ruoyi.project.generate.company.mapper;
 
 import com.ruoyi.project.generate.company.domain.CompanyAll;
+import com.ruoyi.project.generate.company.domain.CompanyCoalition;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -42,8 +45,8 @@ public interface CompanyAllMapper {
    * @param id 产业链网络层编号
    * @return 产业链名称
    */
-  @Select("select name from chain where layer_id = #{layer_id}")
-  public String getIndustryChainNameByLayerId(Long layer_id);
+  @Select("select name from chain where id=#{layer_id}")
+  public String getIndustryChainNameByLayerId(Integer layer_id);
 
   /**
    * 修改企业信息
@@ -61,6 +64,9 @@ public interface CompanyAllMapper {
    */
   public int deleteCompanyAllById(Long id);
 
+
+  @Delete("delete from multiplex_relationship where company1_id=#{id}")
+  public void deleteCompanyRelation(Long id);
   /**
    * 批量删除企业信息
    *
@@ -77,12 +83,25 @@ public interface CompanyAllMapper {
 
   List<String> getNamesByIds(List<Integer> ids);
 
-  @Select("select * from `ry-vue`.company_all where status = 1")
-  List<CompanyAll> getAllIdleCompany();
+  @Select("select * from `ry-vue`.company_all where status = 1 and  company_type=#{taskType}")
+  List<CompanyAll> getAllIdleCompany(Integer taskType);
 
-  @Select("select * from `ry-vue`.company_all where status = 2 and company_all.coalition_id =#{coalitionId}")
-  List<CompanyAll> getCompanyByCoalition(Long coalitionId);
+  @Select("select cc.layer_id as layer_id, cc.company_id as company_id, ca.name as company_name from company_coalition  cc inner join company_all ca\n" +
+          "    on cc.company_id=ca.id and cc.layer_id=ca.layer_id where cc.coalition_id=#{coalitionId}")
+  List<CompanyCoalition> getCompanyByCoalition(Integer coalitionId);
 
     @Select("select * from `ry-vue`.company_all")
   List<CompanyAll> getAllCompany();
+
+    @Select("select max(id) from `ry-vue`.company_all")
+  Integer getMaxId();
+
+    @Delete("delete from company_resource where company_id in (#{ids})")
+    void deleteCompanyResource(Long[] ids);
+
+    @Insert("insert into company_coalition(coalition_id,layer_id,company_id) values (#{coalitionId},#{layerId} ,#{companyId}  )")
+  void insertCompanyCoalition(CompanyCoalition companyCoalition);
+
+    @Select("select * from company_coalition")
+  List<CompanyCoalition> getAllCoalition();
 }

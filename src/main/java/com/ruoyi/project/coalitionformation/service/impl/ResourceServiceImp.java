@@ -3,9 +3,10 @@ package com.ruoyi.project.coalitionformation.service.impl;
 import com.ruoyi.project.coalitionformation.entity.Resource;
 import com.ruoyi.project.coalitionformation.mapper.ResourceMapper;
 import com.ruoyi.project.coalitionformation.service.ResourceService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ResourceServiceImp implements ResourceService {

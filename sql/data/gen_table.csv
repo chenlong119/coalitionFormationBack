@@ -1,5 +1,0 @@
-3,tasks,系统任务表,,,Tasks,crud,com.ruoyi.project.task,task,management,系统任务,ruoyi,0,/,"{""parentMenuId"":2006}",admin,2023-11-14 11:34:07,"",2023-11-14 11:37:24,
-5,enterprise,企业表,,,Enterprise,crud,com.ruoyi.project.enterprise,enterprise,enterprise,企业管理,ruoyi,0,/,"{""parentMenuId"":2006}",admin,2023-11-14 12:21:54,"",2023-11-14 12:24:12,
-6,resource,资源表,,,Resource,crud,com.ruoyi.project.resource,resocrce,resource,资源,ruoyi,0,/,"{""parentMenuId"":2006}",admin,2023-11-15 06:05:54,"",2023-11-15 06:06:42,
-8,business,企业表,,,Business,crud,com.ruoyi.project.system,system,business,企业,ruoyi,0,/,"{""parentMenuId"":""""}",admin,2023-12-07 07:52:39,"",2023-12-07 07:53:46,
-9,task,系统任务表,,,Task,crud,com.ruoyi.project.taskallocation,task,management,系统任务管理,cl,0,/,"{""parentMenuId"":""2006""}",admin,2023-12-12 07:11:28,"",2023-12-12 07:18:06,

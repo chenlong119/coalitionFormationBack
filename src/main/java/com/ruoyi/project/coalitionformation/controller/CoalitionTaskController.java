@@ -17,8 +17,8 @@ public class CoalitionTaskController {
     private CoalitionTaskService coalitionTaskService;
 
     @PostMapping("/allocation")
-    public Integer allocate(Integer taskId, @RequestBody List<Resource> resourceList)
+    public Integer allocate(Integer taskId,Integer taskType, @RequestBody List<Resource> resourceList)
     {
-        return coalitionTaskService.allocate(taskId, resourceList);
+        return coalitionTaskService.allocate(taskId,taskType, resourceList);
     }
 }

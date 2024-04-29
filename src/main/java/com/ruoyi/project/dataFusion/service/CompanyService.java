@@ -22,4 +22,6 @@ public interface CompanyService {
   List<Company2> getAllCompaniesWithOverallLocation();
 
   List<Group> getGroupInfo();
+
+  List<Company2> searchSingleByName(String name);
 }

@@ -12,7 +12,11 @@ public class MonthlyStatisticsService {
     @Autowired
     private MonthlyStatisticsMapper statisticsMapper;
 
+    // 在Service层或Mapper层中打印日志，查看查询结果
     public List<MonthlyStatistics> getAllMonthlyStatistics() {
-        return statisticsMapper.selectAllMonthlyStatistics();
+        List<MonthlyStatistics> statistics = statisticsMapper.selectAllMonthlyStatistics();
+        System.out.println("Fetched Statistics: " + statistics);  // 使用日志框架更为合适
+        return statistics;
     }
+
 }

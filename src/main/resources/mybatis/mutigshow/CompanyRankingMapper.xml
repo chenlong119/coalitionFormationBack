@@ -7,7 +7,7 @@
         <result property="score" column="score"/>
     </resultMap>
     <select id="selectCompanyRankingList" resultMap="companyRanking">
-        SELECT
+        SELECT DISTINCT
             id,
             name,
             score,

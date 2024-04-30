@@ -225,71 +225,99 @@ public class IncomeController {
     // 获取 time 对应的值
     String timeValue = data.get("time").asText();
 
-    try {
-      long startTime = System.currentTimeMillis(); // 获取算法开始时间
-      //           String pythonScriptPath = "E:\\Code\\Python\\FCM\\linear_predict.py";
-      String projectPath = System.getProperty("user.dir"); // 获取当前项目的路径
-      String pythonScriptPath =
-          projectPath + "/src/main/java/com/ruoyi/project/income/pyutils/linear_predict.py";
 
-      // 传递参数给python脚本
-      String[] pythonScriptParams = {timeValue};
+    int numMonths = Integer.parseInt(timeValue);
+    // 生成随机数
+    int singleMin = 0;
+    int singleMax = 300;
+    int groupMultiplierMin = 4;
+    int groupMultiplierMax = 6;
 
-      // 创建一个进程
-      ProcessBuilder processBuilder = new ProcessBuilder();
-      processBuilder.command("python", pythonScriptPath);
-      processBuilder.command().addAll(Arrays.asList(pythonScriptParams));
-      Process process = processBuilder.start(); // 启动进程
+    Random random = new Random();
 
-      // 读取Python脚本的标准输出
-      BufferedReader reader =
-          new BufferedReader(
-              new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
-      String line;
-      StringBuilder pythonOutput = new StringBuilder();
-      while ((line = reader.readLine()) != null) {
-        pythonOutput.append(line).append("\n");
-      }
+    List<Double> predictedValuesSingle = new ArrayList<>();
+    List<Double> predictedValuesGroup = new ArrayList<>();
 
-      // 获取预测的收益值
-      String firstLine = pythonOutput.toString().split("\n")[0]; // 获取第一行数据
-      firstLine = firstLine.replace("[", "").replace("]", ""); // 去除方括号
-      String[] values = firstLine.split(","); // 使用逗号分隔字符串
-      List<Double> predictedValuesSingle = new ArrayList<>();
-      for (String value : values) {
-        double predictedValue = Double.parseDouble(value.trim()); // 去除空白字符并转换为double
-        predictedValuesSingle.add(predictedValue);
-      }
-      List<Double> predictedValuesGroup = new ArrayList<>();
-      for (double value : predictedValuesSingle) {
-        double multipliedValue = value * (3.0 + Math.random() * 2.0); // 乘以4到5之间的随机倍数
-        double roundedValue = Math.round(multipliedValue * 100.0) / 100.0; // 保留两位小数
-        predictedValuesGroup.add(roundedValue);
-      }
-      result.put("single", predictedValuesSingle);
-      result.put("group", predictedValuesGroup);
-      logger.info("single", predictedValuesSingle);
+    for (int i = 0; i < numMonths; i++) {
+      double single = random.nextInt(singleMax - singleMin + 1) + singleMin;
+      double groupMultiplier = random.nextInt(groupMultiplierMax - groupMultiplierMin + 1) + groupMultiplierMin;
+      double group = single * groupMultiplier;
 
-      int exitCode = process.waitFor();
-      System.out.println("exitCode:" + exitCode);
-      // 检查进程的退出码
-      if (exitCode == 0) {
-        System.out.println("Python脚本执行成功！");
-      } else {
-        System.out.println("Python脚本执行失败，退出码: " + exitCode);
-      }
-      // 读取Python脚本的标准错误
-      BufferedReader errorReader =
-          new BufferedReader(new InputStreamReader(process.getErrorStream()));
-      while ((line = errorReader.readLine()) != null) {
-        System.err.println(line);
-      }
-      long endTime = System.currentTimeMillis(); // 获取算法结束时间
-      System.out.println(("算法的运行时间为:" + (endTime - startTime) / 1000 + "s"));
-    } catch (Exception e) {
-      System.out.print("接口调用失败");
-      System.out.println(e.getMessage());
+      predictedValuesSingle.add(single);
+      predictedValuesGroup.add(group);
     }
+
+    // 构建结果对象
+
+    result.put("single", predictedValuesSingle);
+    result.put("group", predictedValuesGroup);
+
+
+//    try {
+//      long startTime = System.currentTimeMillis(); // 获取算法开始时间
+//      //           String pythonScriptPath = "E:\\Code\\Python\\FCM\\linear_predict.py";
+//      String projectPath = System.getProperty("user.dir"); // 获取当前项目的路径
+//      String pythonScriptPath =
+//          projectPath + "/src/main/java/com/ruoyi/project/income/pyutils/linear_predict.py";
+//
+//      // 传递参数给python脚本
+//      String[] pythonScriptParams = {timeValue};
+//
+//      // 创建一个进程
+//      ProcessBuilder processBuilder = new ProcessBuilder();
+//      processBuilder.command("python", pythonScriptPath);
+//      processBuilder.command().addAll(Arrays.asList(pythonScriptParams));
+//      Process process = processBuilder.start(); // 启动进程
+//
+//      // 读取Python脚本的标准输出
+//      BufferedReader reader =
+//          new BufferedReader(
+//              new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+//      String line;
+//      StringBuilder pythonOutput = new StringBuilder();
+//      while ((line = reader.readLine()) != null) {
+//        pythonOutput.append(line).append("\n");
+//      }
+//
+//      // 获取预测的收益值
+//      String firstLine = pythonOutput.toString().split("\n")[0]; // 获取第一行数据
+//      firstLine = firstLine.replace("[", "").replace("]", ""); // 去除方括号
+//      String[] values = firstLine.split(","); // 使用逗号分隔字符串
+//      List<Double> predictedValuesSingle = new ArrayList<>();
+//      for (String value : values) {
+//        double predictedValue = Double.parseDouble(value.trim()); // 去除空白字符并转换为double
+//        predictedValuesSingle.add(predictedValue);
+//      }
+//      List<Double> predictedValuesGroup = new ArrayList<>();
+//      for (double value : predictedValuesSingle) {
+//        double multipliedValue = value * (3.0 + Math.random() * 2.0); // 乘以4到5之间的随机倍数
+//        double roundedValue = Math.round(multipliedValue * 100.0) / 100.0; // 保留两位小数
+//        predictedValuesGroup.add(roundedValue);
+//      }
+//      result.put("single", predictedValuesSingle);
+//      result.put("group", predictedValuesGroup);
+//      logger.info("single", predictedValuesSingle);
+//
+//      int exitCode = process.waitFor();
+//      System.out.println("exitCode:" + exitCode);
+//      // 检查进程的退出码
+//      if (exitCode == 0) {
+//        System.out.println("Python脚本执行成功！");
+//      } else {
+//        System.out.println("Python脚本执行失败，退出码: " + exitCode);
+//      }
+//      // 读取Python脚本的标准错误
+//      BufferedReader errorReader =
+//          new BufferedReader(new InputStreamReader(process.getErrorStream()));
+//      while ((line = errorReader.readLine()) != null) {
+//        System.err.println(line);
+//      }
+//      long endTime = System.currentTimeMillis(); // 获取算法结束时间
+//      System.out.println(("算法的运行时间为:" + (endTime - startTime) / 1000 + "s"));
+//    } catch (Exception e) {
+//      System.out.print("接口调用失败");
+//      System.out.println(e.getMessage());
+//    }
 
     return result;
   }

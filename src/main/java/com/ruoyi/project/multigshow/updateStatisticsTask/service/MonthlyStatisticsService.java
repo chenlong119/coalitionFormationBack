@@ -17,6 +17,7 @@ public class MonthlyStatisticsService {
         List<MonthlyStatistics> statistics = statisticsMapper.selectAllMonthlyStatistics();
         System.out.println("Fetched Statistics: " + statistics);  // 使用日志框架更为合适
         return statistics;
+        
     }
 
 }

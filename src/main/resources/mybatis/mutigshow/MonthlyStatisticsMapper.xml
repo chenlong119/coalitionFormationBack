@@ -25,4 +25,5 @@
     <select id="countHighScoreCompanies" resultType="int" parameterType="int">
         SELECT COUNT(*) FROM company_all WHERE score >= #{score}
     </select>
+    
 </mapper>

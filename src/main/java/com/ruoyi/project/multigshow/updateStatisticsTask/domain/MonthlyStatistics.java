@@ -7,9 +7,9 @@ public class MonthlyStatistics {
     private Long id;
     private String month;
     private Integer highScoreCount;
-    private Integer layer_id;  // 删除了多余的分号
+    private Integer layer_id;  
 
-    // 默认构造方法
+ 
     public MonthlyStatistics() {}
 
     // 全参数构造方法

@@ -13,11 +13,11 @@ public
 class MonthlyStatisticsController {
 
     @Autowired
-    private MonthlyStatisticsService statisticsService;
+    private MonthlyStatisticsService monthlystatisticsService;
 
     @GetMapping("/monthly")
     public ResponseEntity<List<MonthlyStatistics>> getAllMonthlyStatistics() {
-        List<MonthlyStatistics> statistics = statisticsService.getAllMonthlyStatistics();
+        List<MonthlyStatistics> statistics = monthlystatisticsService.getAllMonthlyStatistics();
         return ResponseEntity.ok(statistics);
     }
 }

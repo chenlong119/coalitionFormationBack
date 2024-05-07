@@ -73,4 +73,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectCoalitionByCompanyId"
+            resultType="com.ruoyi.project.generate.coalition.domain.CoalitionEnterprise">
+        select * from coalition
+        <where>
+            <if test="taskId != null ">
+                and task_id = #{taskId}
+            </if>
+            <if test="id != null ">
+                and id = #{id}
+            </if>
+            and task_id in (
+            select id from task_all where task_status!=0 and company_id=#{companyId}
+            )
+        </where>
+    </select>
 </mapper>

@@ -6,6 +6,7 @@ import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
+import com.ruoyi.project.generate.coalition.domain.CoalitionDto;
 import com.ruoyi.project.generate.coalition.domain.CoalitionEnterprise;
 import com.ruoyi.project.generate.coalition.service.ICoalitionEnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,13 @@ public class CoalitionEnterpriseController extends BaseController
         return getDataTable(list);
     }
 
+    @GetMapping("/mylist")
+    public TableDataInfo mylist(CoalitionDto coalitionDto)
+    {
+        startPage();
+        List<CoalitionEnterprise> list = coalitionEnterpriseService.selectCoalitionByCompanyId(coalitionDto);
+        return getDataTable(list);
+    }
     /**
      * 导出企业联盟列表
      */

@@ -1,5 +1,6 @@
 package com.ruoyi.project.generate.coalition.mapper;
 
+import com.ruoyi.project.generate.coalition.domain.CoalitionDto;
 import com.ruoyi.project.generate.coalition.domain.CoalitionEnterprise;
 import org.apache.ibatis.annotations.Select;
 
@@ -63,4 +64,6 @@ public interface CoalitionEnterpriseMapper
 
     @Select("select * from `ry-vue`.coalition")
     List<CoalitionEnterprise> getAll();
+
+    List<CoalitionEnterprise> selectCoalitionByCompanyId(CoalitionDto coalitionDto);
 }

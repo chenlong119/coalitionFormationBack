@@ -8,16 +8,19 @@
     <select id="selectByTaskIdAndCompanyId" resultType="com.ruoyi.project.multig.domain.TaskCompanyInfo">
         SELECT
             id,
-            coaltion_id AS taskId,
+            c.task_id AS taskId,
             company_id AS companyId,
             date_number AS expectedQuantity,
             date_time AS expectedDeliveryTime
         FROM
-            coalition_company
+            coalition_company cc
+                INNER JOIN
+            coalition c ON cc.coaltion_id = c.id
         WHERE
-            coaltion_id = #{taskId}
+            cc.coalition_id = #{taskId}
           AND company_id = #{companyId}
     </select>
+
 
 
 

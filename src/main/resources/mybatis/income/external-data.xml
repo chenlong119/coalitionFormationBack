@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <object-set>
+    <table path="ry-vue.company_all">
+      <table path="ry-vue.company_location_income" from="id" to="company_id"/>
+    </table>
+    <table path="ry-vue.company_all">
+      <table path="ry-vue.company_income" from="id" to="id"/>
+    </table>
+    <table path="ry-vue.chain">
+      <table path="ry-vue.company_all" from="id" to="layer_id"/>
+    </table>
+    <table path="ry-vue.company_all">
+      <table path="ry-vue.company_relation_total" from="id" to="source_id"/>
+      <table path="ry-vue.company_relation_total" from="id" to="target_id"/>
+    </table>
+    <table path="ry-vue.company_all">
+      <table path="ry-vue.multiplex_relationship_1" from="id" to="company1_id"/>
+      <table path="ry-vue.multiplex_relationship_1" from="id" to="company2_id"/>
+    </table>
+  </object-set>
+</data>

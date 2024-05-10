@@ -2,15 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.project.multigshow.updateStatisticsTask.mapper.MonthlyStatisticsMapper">
 
+    <!-- 定义 ResultMap -->
+    <resultMap id="monthlyStatisticsMap" type="com.ruoyi.project.multigshow.updateStatisticsTask.domain.MonthlyStatistics">
+        <id column="id" property="id" />
+        <result column="month" property="month" />
+        <result column="high_score_count" property="highScoreCount" />
+        <result column="layer_id" property="layer_id" />
+    </resultMap>
+
+    <!-- 使用 ResultMap 的查询 -->
+    <select id="selectAllMonthlyStatistics" resultMap="monthlyStatisticsMap">
+        SELECT id, month, high_score_count, layer_id FROM monthly_statistics_sxz
+    </select>
+
+    <!-- 插入记录时确保包括 layer_id -->
     <insert id="insertMonthlyStatistics" parameterType="com.ruoyi.project.multigshow.updateStatisticsTask.domain.MonthlyStatistics">
-        INSERT INTO monthly_statistics_sxz (month, high_score_count)
-        VALUES (#{month}, #{highScoreCount})
+        INSERT INTO monthly_statistics_sxz (month, high_score_count, layer_id)
+        VALUES (#{month}, #{highScoreCount}, #{layer_id})
     </insert>
 
+    <!-- 统计超过特定分数的公司数量 -->
     <select id="countHighScoreCompanies" resultType="int" parameterType="int">
         SELECT COUNT(*) FROM company_all WHERE score >= #{score}
     </select>
-    <select id="selectAllMonthlyStatistics" resultType="com.ruoyi.project.multigshow.updateStatisticsTask.domain.MonthlyStatistics">
-        SELECT * FROM monthly_statistics_sxz
-    </select>
+    
 </mapper>

@@ -1,5 +1,6 @@
 package com.ruoyi.project.generate.coalition.service;
 
+import com.ruoyi.project.generate.coalition.domain.CoalitionDto;
 import com.ruoyi.project.generate.coalition.domain.CoalitionEnterprise;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public interface ICoalitionEnterpriseService
      */
     public int insertCoalitionEnterprise(CoalitionEnterprise coalitionEnterprise);
 
+   public  List<CoalitionEnterprise>  selectCoalitionByCompanyId(CoalitionDto coalitionDto);
     /**
      * 修改企业联盟
      * 

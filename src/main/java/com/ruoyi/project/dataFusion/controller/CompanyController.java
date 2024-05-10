@@ -5,7 +5,6 @@ import com.ruoyi.project.dataFusion.domain.CompanyDTO;
 import com.ruoyi.project.dataFusion.domain.CompanyRelationDTO;
 import com.ruoyi.project.dataFusion.domain.Group;
 import com.ruoyi.project.dataFusion.service.CompanyService;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Slf4j
 @ResponseBody
 @Component("companyController2")
@@ -21,16 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class CompanyController {
   @Autowired private CompanyService companyService;
 
-//  @GetMapping
-//  public CompanyDTO getAllCompanies() {
-//    log.info("企业特征信息");
-//    return new CompanyDTO(companyService.getAllCompanies());
-//  }
 
   @GetMapping("/list")
   public CompanyDTO getAllCompaniesWithoutLocation() throws MWException {
     log.info("企业特征信息");
-//    companyService.CompanyDataProcessor();
+//    companyService.CompanyDa  taProcessor();
     return new CompanyDTO(companyService.getAllCompaniesWithoutLocation());
   }
 

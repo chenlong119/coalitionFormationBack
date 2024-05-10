@@ -19,7 +19,7 @@ public interface TaskAllMapper {
   @Select("select * from `ry-vue`.task_all where chain_id=#{chainId}")
   public List<TaskAll> getChainTask(Integer chainId);
 
-  @Select("select * from `ry-vue`.task_all")
+  @Select("select * from `ry-vue`.task_all where name not like '%test%'")
   public List<TaskAll> getAllTask();
   /**
    * 查询任务信息

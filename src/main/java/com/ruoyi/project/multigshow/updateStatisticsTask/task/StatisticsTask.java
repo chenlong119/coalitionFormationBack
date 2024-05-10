@@ -14,7 +14,7 @@ public class StatisticsTask {
     @Autowired
     private StatisticsService statisticsService;
     private static final Logger logger = LoggerFactory.getLogger(StatisticsService.class);
-    @Scheduled(cron = "0 0 0 1 * ?") // 每分钟执行一次
+    @Scheduled(cron = "0 0 0 1 * ?")  
     public void generateMonthlyStatistics() {
         try {
             statisticsService.calculateAndStoreMonthlyStatistics();

@@ -66,4 +66,10 @@ public interface CoalitionEnterpriseMapper
     List<CoalitionEnterprise> getAll();
 
     List<CoalitionEnterprise> selectCoalitionByCompanyId(CoalitionDto coalitionDto);
+
+    List<Integer> getCoalitionIdsByTaskIds(Long[] ids);
+
+    void deleteTaskCoalition(Long[] ids);
+
+    void deleteCoalitionCompany(List<Integer> coalitionIds);
 }

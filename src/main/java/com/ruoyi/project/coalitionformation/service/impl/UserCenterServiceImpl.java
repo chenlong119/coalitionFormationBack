@@ -31,5 +31,7 @@ public class UserCenterServiceImpl implements UserCenterService {
     public void updateTaskStatus(Integer taskId, Integer coalitionId) {
         taskAllMapper.updateTaskStatus(taskId);
         coalitionTaskMapper.updateCoalitionStatus(coalitionId);
+        //更新联盟中所有企业的状态为1
+        coalitionTaskMapper.updateCoalitionCompanyStatus(coalitionId);
     }
 }

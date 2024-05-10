@@ -1,5 +1,6 @@
 package com.ruoyi.project.generate.taskcoalition.service.impl;
 
+import com.ruoyi.project.generate.coalition.mapper.CoalitionEnterpriseMapper;
 import com.ruoyi.project.generate.taskcoalition.domain.TaskAll;
 import com.ruoyi.project.generate.taskcoalition.mapper.TaskAllMapper;
 import com.ruoyi.project.generate.taskcoalition.service.ITaskAllService;
@@ -19,6 +20,8 @@ import java.util.List;
 public class TaskAllServiceImpl implements ITaskAllService {
   @Autowired TaskAllMapper taskAllMapper;
 
+  @Autowired
+  CoalitionEnterpriseMapper coalitionMapper;
   /**
    * 查询任务信息
    *
@@ -76,7 +79,11 @@ public class TaskAllServiceImpl implements ITaskAllService {
   @Override
   @Transactional
   public int deleteTaskAllByIds(Long[] ids) {
+    //删除任务对应的联盟以及联盟中所有企业
     taskAllMapper.deleteTaskResource(ids);
+    List<Integer> coalitionIds=coalitionMapper.getCoalitionIdsByTaskIds(ids);
+    coalitionMapper.deleteTaskCoalition(ids);
+    coalitionMapper.deleteCoalitionCompany(coalitionIds);
     return taskAllMapper.deleteTaskAllByIds(ids);
   }
 

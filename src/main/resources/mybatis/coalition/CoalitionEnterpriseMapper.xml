@@ -89,4 +89,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             )
         </where>
     </select>
+
+    <select id="getCoalitionIdsByTaskIds" resultType="java.lang.Integer">
+        select id from coalition where task_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <delete id="deleteTaskCoalition">
+        delete from coalition where task_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteCoalitionCompany">
+        delete from company_coalition where coalition_id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+    </delete>
 </mapper>

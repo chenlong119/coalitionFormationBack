@@ -16,4 +16,8 @@ public interface CoalitionTaskMapper {
 
     @Update("update `ry-vue`.coalition set coalition_status=2 where id=#{coalitionId}")
     void updateCoalitionStatus(Integer coalitionId);
+
+    @Update("update company_all set status=1 where coalition_id=#{coalitionId}  ")
+    void updateCoalitionCompanyStatus(Integer coalitionId);
+
 }

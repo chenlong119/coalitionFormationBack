@@ -24,6 +24,7 @@ public class WorkshopSchedulingServiceImpl implements WorkshopSchedulingService 
   private List<Object[]> dataList;
   private Map<Integer, Set<Integer>> taskToCompaniesMap;
   private Map<Integer, List<Integer>> jobToMachinesMap;
+  //页面启动问题
   private boolean isGaRun = false;
   //显示状态为1的任务
   @Override

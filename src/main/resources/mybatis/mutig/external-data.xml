@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <object-set>
+    <table path="ry-vue.group_ranking_sxz">
+      <table path="ry-vue.company_all" from="id" to="group_id"/>
+    </table>
+  </object-set>
+</data>

@@ -120,7 +120,7 @@
             MAX(ca.layer_id) AS layer_id, -- 使用 MAX() 聚合函数选择一个 layer_id 进行输出
             MIN(ca.company_type) AS field, -- 使用 MIN() 聚合函数选择一个 company_type 进行输出
             MIN(ca.name) AS name, -- 使用 MIN() 聚合函数选择一个 name 进行输出
-            MIN(cl.layer_relation) AS layer_relation, -- 使用 MIN() 聚合函数选择一个 layer_relation 进行输出
+            MIN(cl.layer) AS layer_relation, -- 使用 MIN() 聚合函数选择一个 layer_relation 进行输出
             MIN(cl.location_x) AS location_x, -- 使用 MIN() 聚合函数选择一个 location_x 进行输出
             MIN(cl.location_y) AS location_y -- 使用 MIN() 聚合函数选择一个 location_y 进行输出
         FROM
@@ -143,9 +143,9 @@
         FROM
             multiplex_relationship_1 mr
                 LEFT JOIN
-            company_location_income cl1 ON mr.company1_id = cl1.company_id AND mr.layer_id = cl1.layer_relation
+            company_location_income cl1 ON mr.company1_id = cl1.company_id AND mr.layer_id = cl1.layer
                 LEFT JOIN
-            company_location_income cl2 ON mr.company2_id = cl2.company_id AND mr.layer_id = cl2.layer_relation
+            company_location_income cl2 ON mr.company2_id = cl2.company_id AND mr.layer_id = cl2.layer
         WHERE
             mr.company1_id &lt;= 30 AND mr.company2_id &lt;= 30;
     </select>

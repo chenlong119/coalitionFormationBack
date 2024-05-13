@@ -50,7 +50,7 @@ public class IncomeController {
 //      return companyIncome;
 //    }
     IncomeDTO companyIncome = null;
-    companyIncome = incomeService.getCompanyById(3);
+    companyIncome = incomeService.getCompanyById(19);
     return companyIncome;
   }
 

@@ -19,7 +19,7 @@ public class TaskService {
     }
 
     public List<MutigTask> selectAllTasks() {
-        int currentUserId = SecurityUtils.getUserId().intValue();
+        int currentUserId =1 /*SecurityUtils.getUserId().intValue()*/;
         return taskMapper.selectAllTasks(currentUserId);
     }
 

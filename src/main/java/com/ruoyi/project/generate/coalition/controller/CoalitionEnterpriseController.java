@@ -10,7 +10,6 @@ import com.ruoyi.project.generate.coalition.domain.CoalitionDto;
 import com.ruoyi.project.generate.coalition.domain.CoalitionEnterprise;
 import com.ruoyi.project.generate.coalition.service.ICoalitionEnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +31,7 @@ public class CoalitionEnterpriseController extends BaseController
     /**
      * 查询企业联盟列表
      */
-    @PreAuthorize("@ss.hasPermi('coalition:enterprise:list')")
+//    @PreAuthorize("@ss.hasPermi('coalition:enterprise:list')")
     @GetMapping("/list")
     public TableDataInfo list(CoalitionEnterprise coalitionEnterprise)
     {
@@ -51,7 +50,7 @@ public class CoalitionEnterpriseController extends BaseController
     /**
      * 导出企业联盟列表
      */
-    @PreAuthorize("@ss.hasPermi('coalition:enterprise:export')")
+//    @PreAuthorize("@ss.hasPermi('coalition:enterprise:export')")
     @Log(title = "企业联盟", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, CoalitionEnterprise coalitionEnterprise)
@@ -64,7 +63,7 @@ public class CoalitionEnterpriseController extends BaseController
     /**
      * 获取企业联盟详细信息
      */
-    @PreAuthorize("@ss.hasPermi('coalition:enterprise:query')")
+//    @PreAuthorize("@ss.hasPermi('coalition:enterprise:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -74,7 +73,7 @@ public class CoalitionEnterpriseController extends BaseController
     /**
      * 新增企业联盟
      */
-    @PreAuthorize("@ss.hasPermi('coalition:enterprise:add')")
+//    @PreAuthorize("@ss.hasPermi('coalition:enterprise:add')")
     @Log(title = "企业联盟", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody CoalitionEnterprise coalitionEnterprise)
@@ -85,7 +84,7 @@ public class CoalitionEnterpriseController extends BaseController
     /**
      * 修改企业联盟
      */
-    @PreAuthorize("@ss.hasPermi('coalition:enterprise:edit')")
+//    @PreAuthorize("@ss.hasPermi('coalition:enterprise:edit')")
     @Log(title = "企业联盟", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody CoalitionEnterprise coalitionEnterprise)
@@ -96,7 +95,7 @@ public class CoalitionEnterpriseController extends BaseController
     /**
      * 删除企业联盟
      */
-    @PreAuthorize("@ss.hasPermi('coalition:enterprise:remove')")
+//    @PreAuthorize("@ss.hasPermi('coalition:enterprise:remove')")
     @Log(title = "企业联盟", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

@@ -1,14 +1,11 @@
 package com.ruoyi.project.coalitionformation.service.impl;
 
-import com.ruoyi.framework.security.LoginUser;
 import com.ruoyi.project.coalitionformation.mapper.CoalitionTaskMapper;
 import com.ruoyi.project.coalitionformation.mapper.UserCenterMapper;
 import com.ruoyi.project.coalitionformation.service.UserCenterService;
 import com.ruoyi.project.generate.company.domain.CompanyAll;
 import com.ruoyi.project.multimode.mapper.TaskAllMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +18,10 @@ public class UserCenterServiceImpl implements UserCenterService {
     @Autowired private TaskAllMapper taskAllMapper;
     @Override
     public List<CompanyAll> getUserInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        LoginUser userLogin = (LoginUser) authentication.getPrincipal();
-        return  userCenterMapper.getUserInfo(userLogin.getUserId());
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        LoginUser userLogin = (LoginUser) authentication.getPrincipal();
+//        return  userCenterMapper.getUserInfo(userLogin.getUserId());
+        return  userCenterMapper.getUserInfo(1L);
     }
 
     @Transactional

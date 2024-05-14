@@ -11,7 +11,6 @@ import com.ruoyi.project.generate.taskcoalition.domain.TaskAll;
 import com.ruoyi.project.generate.taskcoalition.service.ITaskAllService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +32,7 @@ public class TaskAllController extends BaseController {
   @Autowired private ITaskAllService taskAllService;
 
   /** 查询任务信息列表 */
-  @PreAuthorize("@ss.hasPermi('coalition:formation:list')")
+//  @PreAuthorize("@ss.hasPermi('coalition:formation:list')")
   @GetMapping("/list")
   public TableDataInfo list(TaskAll taskAll) {
     startPage();
@@ -51,7 +50,7 @@ public class TaskAllController extends BaseController {
         return taskAllService.getChainTask(chainId);
     }
   /** 导出任务信息列表 */
-  @PreAuthorize("@ss.hasPermi('coalition:formation:export')")
+//  @PreAuthorize("@ss.hasPermi('coalition:formation:export')")
   @Log(title = "任务信息", businessType = BusinessType.EXPORT)
   @PostMapping("/export")
   public void export(HttpServletResponse response, TaskAll taskAll) {
@@ -61,14 +60,14 @@ public class TaskAllController extends BaseController {
   }
 
   /** 获取任务信息详细信息 */
-  @PreAuthorize("@ss.hasPermi('coalition:formation:query')")
+//  @PreAuthorize("@ss.hasPermi('coalition:formation:query')")
   @GetMapping(value = "/{id}")
   public AjaxResult getInfo(@PathVariable("id") Long id) {
     return success(taskAllService.selectTaskAllById(id));
   }
 
   /** 新增任务信息 */
-  @PreAuthorize("@ss.hasPermi('coalition:formation:add')")
+//  @PreAuthorize("@ss.hasPermi('coalition:formation:add')")
   @Log(title = "任务信息", businessType = BusinessType.INSERT)
   @PostMapping
   public AjaxResult add(@RequestBody TaskAll taskAll) {
@@ -80,7 +79,7 @@ public class TaskAllController extends BaseController {
   }
 
   /** 修改任务信息 */
-  @PreAuthorize("@ss.hasPermi('coalition:formation:edit')")
+//  @PreAuthorize("@ss.hasPermi('coalition:formation:edit')")
   @Log(title = "任务信息", businessType = BusinessType.UPDATE)
   @PutMapping
   public AjaxResult edit(@RequestBody TaskAll taskAll) {
@@ -88,7 +87,7 @@ public class TaskAllController extends BaseController {
   }
 
   /** 删除任务信息 */
-  @PreAuthorize("@ss.hasPermi('coalition:formation:remove')")
+//  @PreAuthorize("@ss.hasPermi('coalition:formation:remove')")
   @Log(title = "任务信息", businessType = BusinessType.DELETE)
   @DeleteMapping("/{ids}")
   public AjaxResult remove(@PathVariable Long[] ids) {

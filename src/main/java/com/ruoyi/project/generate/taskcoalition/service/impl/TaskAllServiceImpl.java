@@ -81,9 +81,12 @@ public class TaskAllServiceImpl implements ITaskAllService {
   public int deleteTaskAllByIds(Long[] ids) {
     //删除任务对应的联盟以及联盟中所有企业
     taskAllMapper.deleteTaskResource(ids);
-    List<Integer> coalitionIds=coalitionMapper.getCoalitionIdsByTaskIds(ids);
     coalitionMapper.deleteTaskCoalition(ids);
-    coalitionMapper.deleteCoalitionCompany(coalitionIds);
+    List<Integer> coalitionIds=coalitionMapper.getCoalitionIdsByTaskIds(ids);
+    //过滤掉为0的联盟id
+    coalitionIds.removeIf(coalitionId->coalitionId==0);
+    if(!coalitionIds.isEmpty())
+      coalitionMapper.deleteCoalitionCompany(coalitionIds);
     return taskAllMapper.deleteTaskAllByIds(ids);
   }
 

@@ -1,5 +1,6 @@
 package com.ruoyi.project.coalitionformation.service.impl;
 
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.project.coalitionformation.mapper.CoalitionTaskMapper;
 import com.ruoyi.project.coalitionformation.mapper.UserCenterMapper;
 import com.ruoyi.project.coalitionformation.service.UserCenterService;
@@ -21,7 +22,7 @@ public class UserCenterServiceImpl implements UserCenterService {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        LoginUser userLogin = (LoginUser) authentication.getPrincipal();
 //        return  userCenterMapper.getUserInfo(userLogin.getUserId());
-        return  userCenterMapper.getUserInfo(1L);
+        return  userCenterMapper.getUserInfo(SecurityUtils.getUserId());
     }
 
     @Transactional

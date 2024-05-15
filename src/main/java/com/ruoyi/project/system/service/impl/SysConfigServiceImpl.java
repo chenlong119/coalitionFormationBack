@@ -1,10 +1,5 @@
 package com.ruoyi.project.system.service.impl;
 
-import java.util.Collection;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.text.Convert;
@@ -14,6 +9,12 @@ import com.ruoyi.framework.redis.RedisCache;
 import com.ruoyi.project.system.domain.SysConfig;
 import com.ruoyi.project.system.mapper.SysConfigMapper;
 import com.ruoyi.project.system.service.ISysConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 参数配置 服务层实现
@@ -85,12 +86,13 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public boolean selectCaptchaEnabled()
     {
-        String captchaEnabled = selectConfigByKey("sys.account.captchaEnabled");
-        if (StringUtils.isEmpty(captchaEnabled))
-        {
-            return true;
-        }
-        return Convert.toBool(captchaEnabled);
+//        String captchaEnabled = selectConfigByKey("sys.account.captchaEnabled");
+//        if (StringUtils.isEmpty(captchaEnabled))
+//        {
+//            return true;
+//        }
+//        return Convert.toBool(captchaEnabled);
+        return false;
     }
 
     /**

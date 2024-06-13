@@ -24,4 +24,6 @@ public interface CompanyService {
   List<Group> getGroupInfo();
 
   List<Company2> searchSingleByName(String name);
+
+  int[] searchImportantNode();
 }

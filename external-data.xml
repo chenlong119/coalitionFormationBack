@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <object-set>
+    <table path="ry-vue.chain">
+      <table path="ry-vue.company_all" from="id" to="layer_id"/>
+    </table>
+    <table path="ry-vue.coalition">
+      <table path="ry-vue.company_all" from="id" to="coalition_id"/>
+    </table>
+    <table path="ry-vue.coalition">
+      <table path="ry-vue.mode" from="mode" to="mode"/>
+    </table>
+    <table path="ry-vue.coalition">
+      <table path="ry-vue.company_coalition" from="id" to="coalition_id"/>
+    </table>
+    <table path="ry-vue.task_all">
+      <table path="ry-vue.company_all" from="company_id" to="id"/>
+    </table>
+    <table path="ry-vue.task_resource">
+      <table path="ry-vue.task_all" from="task_id" to="id"/>
+    </table>
+    <table path="ry-vue.company_income">
+      <table path="ry-vue.company_group_cj" from="category" to="group_id"/>
+      <table path="ry-vue.company_all" from="id" to="id"/>
+    </table>
+    <table path="ry-vue.multiplex_relationship_1">
+      <table path="ry-vue.company_all" from="company1_id" to="id"/>
+      <table path="ry-vue.company_all" from="company2_id" to="id"/>
+    </table>
+    <table path="ry-vue.company_location_cj">
+      <table path="ry-vue.company_all" from="company_id" to="id"/>
+      <table path="ry-vue.multiplex_relationship_1" from="layer" to="layer_id"/>
+    </table>
+    <table path="ry-vue.company_overall_location_cj">
+      <table path="ry-vue.company_all" from="company_id" to="id"/>
+    </table>
+    <table path="ry-vue.company_relation_total">
+      <table path="ry-vue.company_all" from="source_id" to="id"/>
+      <table path="ry-vue.company_all" from="target_id" to="id"/>
+    </table>
+
+    <table path="ry-vue.group_ranking_sxz">
+      <table path="ry-vue.company_all" from="id" to="group_id"/>
+    </table>
+
+    <table path="ry-vue.company_all">
+      <table path="ry-vue.company_location_income" from="id" to="company_id"/>
+    </table>
+
+    <table path="ry-vue.company_all">
+      <table path="ry-vue.company_resource" from="id" to="company_id"/>
+      <table path="ry-vue.company_resource" from="id,layer_id" to="company_id,layer_id"/>
+    </table>
+    <table path="ry-vue.company_resource">
+      <table path="ry-vue.resource_all" from="resource_id" to="id"/>
+    </table>
+    <table path="ry-vue.task_all">
+      <table path="ry-vue.task_resource" from="id" to="task_id"/>
+    </table>
+    <table path="ry-vue.task_resource">
+      <table path="ry-vue.resource_all" from="resource_id" to="id"/>
+    </table>
+
+    <table path="ry-vue.auction_record">
+      <table path="ry-vue.auction_user" from="UserID" to="UserID"/>
+      <table path="ry-vue.tasks" from="RecordID" to="id"/>
+    </table>
+    <table path="ry-vue.auction_user">
+      <table path="ry-vue.auction_record" from="UserID" to="UserID"/>
+      <table path="ry-vue.bid" from="UserID" to="UserID"/>
+      <table path="ry-vue.bid_company_group" from="UserID" to="UserId"/>
+      <table path="ry-vue.bid_company_group" from="UserName" to="UserName"/>
+      <table path="ry-vue.company_group_forming_auction" from="UserID" to="groupAuctionReleaser"/>
+      <table path="ry-vue.tasks" from="UserID" to="accepter"/>
+      <table path="ry-vue.tasks" from="UserID" to="taskReleaser"/>
+    </table>
+    <table path="ry-vue.bid">
+      <table path="ry-vue.auction_record" from="BidID" to="RecordID"/>
+      <table path="ry-vue.tasks" from="DataID" to="id"/>
+    </table>
+    <table path="ry-vue.bid_company_group">
+      <table path="ry-vue.company_group_forming_auction" from="AuctionId" to="id"/>
+    </table>
+
+
+  </object-set>
+</data>

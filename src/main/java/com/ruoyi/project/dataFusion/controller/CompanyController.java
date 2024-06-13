@@ -63,5 +63,10 @@ public class CompanyController {
     return new CompanyDTO(companyService.searchSingleByName(name));
   }
 
+  @GetMapping("/searchImportantNode")
+  public int[] searchImportantNode(){
+    return companyService.searchImportantNode();
+  }
+
 
 }

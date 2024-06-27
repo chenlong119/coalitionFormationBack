@@ -12,7 +12,9 @@ import java.util.List;
 @Mapper
 public interface HomeMapper {
 
-    @Select("select  id, name, layer_id, company_type, chain_name from company_all")
+    @Select("SELECT ca.id, ca.name, ca.layer_id, ca.company_type, ch.name AS chain_name " +
+            "FROM company_all ca " +
+            "JOIN chain ch ON ca.layer_id = ch.id")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "name", column = "name"),

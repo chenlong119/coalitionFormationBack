@@ -1,6 +1,7 @@
 package com.ruoyi.project.generate.coalition.service.impl;
 
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.project.generate.coalition.domain.CoalitionDto;
 import com.ruoyi.project.generate.coalition.domain.CoalitionEnterprise;
 import com.ruoyi.project.generate.coalition.mapper.CoalitionEnterpriseMapper;
 import com.ruoyi.project.generate.coalition.service.ICoalitionEnterpriseService;
@@ -56,6 +57,12 @@ public class CoalitionEnterpriseServiceImpl implements ICoalitionEnterpriseServi
     {
         coalitionEnterprise.setCreateTime(DateUtils.getNowDate());
         return coalitionEnterpriseMapper.insertCoalitionEnterprise(coalitionEnterprise);
+    }
+
+    @Override
+    public List<CoalitionEnterprise> selectCoalitionByCompanyId(CoalitionDto coalitionDto) {
+
+        return coalitionEnterpriseMapper.selectCoalitionByCompanyId(coalitionDto);
     }
 
     /**

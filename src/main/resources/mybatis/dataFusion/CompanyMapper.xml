@@ -15,6 +15,25 @@
         <result property="isCooperation" column="is_cooperation"/>
         <result property="isCompetition" column="is_competition"/>
     </resultMap>
+    <insert id="createAssessment">
+        INSERT INTO assessment (
+        name,
+        assessment1,
+        assessment2,
+        assessment3,
+        assessment,
+        comment,
+        comment_time
+        ) VALUES (
+        #{name},
+        #{assessment1},
+        #{assessment2},
+        #{assessment3},
+        #{assessment},
+        #{comment},
+        #{commentTime}
+        )
+    </insert>
 
     <update id="updateCompanyCategory">
         UPDATE company_income
@@ -53,6 +72,9 @@
         set strength = #{strength}
         where company1_id = #{company1_id} and company2_id=#{company2_id} and layer_id=#{layer_id}
     </update>
+    <delete id="deleteAssessment">
+        DELETE FROM assessment WHERE id = #{id}
+    </delete>
 
     <select id="getAllCompanies" resultType="com.ruoyi.project.dataFusion.domain.Company2">
         SELECT it.*, clc.location_id, clc.location_x, clc.location_y, clc.layer
@@ -223,5 +245,8 @@
         FROM company_all c
                  INNER JOIN company_income ci ON c.id = ci.id
         WHERE c.name = #{name};
+    </select>
+    <select id="getAssessments" resultType="com.ruoyi.project.dataFusion.domain.Assessment">
+        select * From assessment;
     </select>
 </mapper>

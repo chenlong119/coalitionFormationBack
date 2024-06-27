@@ -17,7 +17,6 @@ class CompanyControllerTest {
 
     @Test
     public void test() throws MWException {
-        int[] num = companyService.searchImportantNode();
-        for(int i : num) System.out.println(i);
+        companyService.computeRelationStrengths();
     }
 }

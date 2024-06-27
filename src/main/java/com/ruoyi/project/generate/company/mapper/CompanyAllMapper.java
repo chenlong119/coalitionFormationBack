@@ -96,7 +96,12 @@ public interface CompanyAllMapper {
     @Select("select max(id) from `ry-vue`.company_all")
   Integer getMaxId();
 
-    @Delete("delete from company_resource where company_id in (#{ids})")
+  @Delete("<script>"
+          + "DELETE FROM company_resource WHERE company_id in "
+          + "<foreach item='id' index='index' collection='ids' open='(' separator=',' close=')'>"
+          + "#{id}"
+          + "</foreach>"
+          + "</script>")
     void deleteCompanyResource(Long[] ids);
 
     @Insert("insert into company_coalition(coalition_id,layer_id,company_id) values (#{coalitionId},#{layerId} ,#{companyId}  )")

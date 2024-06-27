@@ -1,9 +1,7 @@
 package com.ruoyi.project.dataFusion.mapper;
 
-import com.ruoyi.project.dataFusion.domain.Company2;
-import com.ruoyi.project.dataFusion.domain.Group;
-import com.ruoyi.project.dataFusion.domain.Link;
-import com.ruoyi.project.dataFusion.domain.Relation;
+import com.ruoyi.project.dataFusion.domain.*;
+
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -69,4 +67,10 @@ public interface CompanyMapper {
   void updateRelationStrength(@Param("company1_id") int company1_id,@Param("company2_id") int company2_id, @Param("strength") double strength, @Param("layer_id") int layer_id);
 
   List<Company2> searchSingleByName(String name);
+
+  void createAssessment(Assessment assessment);
+
+  List<Assessment> getAssessments();
+
+  void deleteAssessment(Integer id);
 }

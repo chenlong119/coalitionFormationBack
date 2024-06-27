@@ -1,6 +1,7 @@
 package com.ruoyi.project.dataFusion.service;
 
 import com.mathworks.toolbox.javabuilder.MWException;
+import com.ruoyi.project.dataFusion.domain.Assessment;
 import com.ruoyi.project.dataFusion.domain.Company2;
 import com.ruoyi.project.dataFusion.domain.Group;
 import com.ruoyi.project.dataFusion.domain.Link;
@@ -26,4 +27,10 @@ public interface CompanyService {
   List<Company2> searchSingleByName(String name);
 
   int[] searchImportantNode();
+
+  void createAssessment(Assessment assessment);
+
+  List<Assessment> getAssessments();
+
+  void deleteAssessment(Integer id);
 }

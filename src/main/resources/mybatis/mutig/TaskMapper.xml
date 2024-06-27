@@ -3,11 +3,13 @@
 <mapper namespace="com.ruoyi.project.multig.mapper.MutigTaskMapper">
     <!-- 查询所有任务 -->
     <select id="selectAllTasks" resultType="com.ruoyi.project.multig.domain.MutigTask">
-        SELECT c.id AS id,
-               c.name AS name
-        FROM task_all c
+        SELECT DISTINCT c.task_id AS id,
+               t.name AS name
+        FROM task_all t
+                 JOIN coalition c ON c.task_id = t.id
                  JOIN coalition_company cc ON c.id = cc.coalition_id
-        WHERE cc.company_id = #{userId}
+
+         WHERE cc.company_id = #{userId} AND c.coalition_status = 2
     </select>
 
 

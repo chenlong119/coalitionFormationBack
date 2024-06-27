@@ -21,7 +21,7 @@ public class CompanyService {
 
     // 根据任务ID获取企业列表
     public List<Company> getCompaniesByTaskId(Long taskId) {
-        int userId = SecurityUtils.getUserId().intValue();
+        int userId = 1 /*SecurityUtils.getUserId().intValue()*/;
         return companyMapper.selectCompaniesByTaskId(taskId, userId);
     }
 }

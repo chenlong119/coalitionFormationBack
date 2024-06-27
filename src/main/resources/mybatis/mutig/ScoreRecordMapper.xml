@@ -10,9 +10,9 @@
             B.score AS score,
             B.timestamp AS timestamp
         FROM
-            coalition A
+            task_all A
                 JOIN
-            score_records_sxz B ON A.task_id = B.task_id
+            score_records_sxz B ON A.id = B.task_id
                 JOIN
             company_all C ON B.evaluated_company_id = C.id
         WHERE

@@ -6,10 +6,7 @@ import Cluster.Class1;
 import com.mathworks.toolbox.javabuilder.*;
 import com.mathworks.toolbox.javabuilder.MWClassID;
 import com.mathworks.toolbox.javabuilder.MWNumericArray;
-import com.ruoyi.project.dataFusion.domain.Company2;
-import com.ruoyi.project.dataFusion.domain.Group;
-import com.ruoyi.project.dataFusion.domain.Link;
-import com.ruoyi.project.dataFusion.domain.Relation;
+import com.ruoyi.project.dataFusion.domain.*;
 import com.ruoyi.project.dataFusion.mapper.CompanyMapper;
 import com.ruoyi.project.dataFusion.service.CompanyService;
 
@@ -17,6 +14,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -506,6 +505,23 @@ public class CompanyServiceImpl implements CompanyService {
             e.printStackTrace();
         }
         return new int[]{0,0};
+    }
+
+    @Override
+    public void createAssessment(Assessment assessment) {
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
+        assessment.setCommentTime(now.toLocalDateTime());
+        companyMapper.createAssessment(assessment);
+    }
+
+    @Override
+    public List<Assessment> getAssessments() {
+        return companyMapper.getAssessments();
+    }
+
+    @Override
+    public void deleteAssessment(Integer id) {
+        companyMapper.deleteAssessment(id);
     }
 
     private static int getIndexOfId(Set<Integer> ids, int id) {

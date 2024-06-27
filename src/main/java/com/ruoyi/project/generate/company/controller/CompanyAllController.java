@@ -10,7 +10,6 @@ import com.ruoyi.project.generate.company.domain.CompanyAll;
 import com.ruoyi.project.generate.company.domain.CompanyCoalition;
 import com.ruoyi.project.generate.company.service.ICompanyAllService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +27,7 @@ public class CompanyAllController extends BaseController {
   @Autowired private ICompanyAllService companyAllService;
 
   /** 查询企业信息列表 */
-  @PreAuthorize("@ss.hasPermi('company:show:list')")
+//  @PreAuthorize("@ss.hasPermi('company:show:list')")
   @GetMapping("/list")
   public TableDataInfo list(CompanyAll companyAll) {
     startPage();
@@ -38,7 +37,7 @@ public class CompanyAllController extends BaseController {
 
 
   /** 导出企业信息列表 */
-  @PreAuthorize("@ss.hasPermi('company:show:export')")
+//  @PreAuthorize("@ss.hasPermi('company:show:export')")
   @Log(title = "企业信息", businessType = BusinessType.EXPORT)
   @PostMapping("/export")
   public void export(HttpServletResponse response, CompanyAll companyAll) {
@@ -48,14 +47,14 @@ public class CompanyAllController extends BaseController {
   }
 
   /** 获取企业信息详细信息 */
-  @PreAuthorize("@ss.hasPermi('company:show:query')")
+//  @PreAuthorize("@ss.hasPermi('company:show:query')")
   @GetMapping(value = "/{id}/{layerId}")
   public AjaxResult getInfo(@PathVariable("id") Long id, @PathVariable Long layerId) {
     return success(companyAllService.selectCompanyAllById(id, layerId));
   }
 
   /** 新增企业信息 */
-  @PreAuthorize("@ss.hasPermi('company:show:add')")
+//  @PreAuthorize("@ss.hasPermi('company:show:add')")
   @Log(title = "企业信息", businessType = BusinessType.INSERT)
   @PostMapping
   public AjaxResult add(@RequestBody CompanyAll companyAll) {
@@ -63,7 +62,7 @@ public class CompanyAllController extends BaseController {
   }
 
   /** 修改企业信息 */
-  @PreAuthorize("@ss.hasPermi('company:show:edit')")
+//  @PreAuthorize("@ss.hasPermi('company:show:edit')")
   @Log(title = "企业信息", businessType = BusinessType.UPDATE)
   @PutMapping
   public AjaxResult edit(@RequestBody CompanyAll companyAll) {
@@ -71,7 +70,7 @@ public class CompanyAllController extends BaseController {
   }
 
   /** 删除企业信息 */
-  @PreAuthorize("@ss.hasPermi('company:show:remove')")
+//  @PreAuthorize("@ss.hasPermi('company:show:remove')")
   @Log(title = "企业信息", businessType = BusinessType.DELETE)
   @DeleteMapping("/{ids}")
   public AjaxResult remove(@PathVariable Long[] ids) {

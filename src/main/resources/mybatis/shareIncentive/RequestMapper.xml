@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.shareIncentive.mapper.RequestMapper">
+
+<!--    <resultMap type="AuctionTask" id="AuctionTaskResult">-->
+<!--        <result property="taskName"    column="taskName"    />-->
+<!--        <result property="taskReleaser"    column="taskReleaser"    />-->
+<!--        <result property="profit"    column="profit"    />-->
+<!--        <result property="dataRelease"    column="dataRelease"    />-->
+<!--        <result property="dataFinish"    column="dataFinish"    />-->
+<!--        <result property="taskState"    column="taskState"    />-->
+<!--        <result property="dataProviders"    column="dataProviders"    />-->
+<!--        <result property="dataProviderValues"    column="dataProviderValues"    />-->
+<!--        <result property="dataProviderRates"    column="dataProviderRates"    />-->
+<!--        <result property="accepter"    column="accepter"    />-->
+<!--        <result property="chain"    column="chain"    />-->
+<!--        <result property="commentScore"    column="commentScore"    />-->
+<!--        <result property="comment"    column="comment"    />-->
+<!--        <result property="enterpriseRelationshipStrength"    column="enterpriseRelationshipStrength"    />-->
+<!--        <result property="sharedPointsGain"    column="sharedPointsGain"    />-->
+<!--        <result property="continuousSharingRewards"    column="continuousSharingRewards"    />-->
+<!--        <result property="afterSalesEvaluationGain"    column="afterSalesEvaluationGain"    />-->
+<!--    </resultMap>-->
+    <!-- 查询所有任务 -->
+    <select id="findAll" resultType="com.ruoyi.project.shareIncentive.domain.Request">
+        SELECT * FROM `ry-vue`.data_sharing_requests;
+    </select>
+    <!-- 根据任务名查询任务 -->
+    <select id="getTaskByState"  resultType="com.ruoyi.project.shareIncentive.domain.Request">
+        SELECT * FROM `ry-vue`.data_sharing_requests WHERE taskState = #{taskName};
+    </select>
+    <!-- 插入任务 -->
+<!--    <insert id="addTask" parameterType="AuctionTask">-->
+<!--        INSERT INTO `ry-vue`.tasks (taskName, taskReleaser, profit, dataRelease, dataFinish, ...)-->
+<!--        VALUES (#{taskName}, #{taskReleaser}, #{profit}, #{dataRelease}, #{dataFinish}, ...);-->
+<!--    </insert>-->
+    <insert id="insertDataSharingRequest" parameterType="Request">
+        INSERT INTO `ry-vue`.data_sharing_requests (
+                request_name, description, industry_chain, data_type, target_companies,deadline,status
+        )
+        VALUES (
+                   #{requestName}, #{description}, #{industryChain}, #{dataType}, #{targetCompanies}, #{deadline},#{status}
+               );
+    </insert>
+
+
+    <update id="setFinished">
+        UPDATE `ry-vue`.data_sharing_requests
+        SET status="已结束"
+        WHERE request_id = #{id};
+
+    </update>
+
+    <!-- 更新任务 -->
+    <update id="updateTask" parameterType="AuctionTask">
+        UPDATE `ry-vue`.tasks
+        SET taskReleaser = #{taskReleaser}, profit = #{profit}, dataRelease = #{dataRelease},
+            dataFinish = #{dataFinish}, taskState = #{taskState}, dataProviders = #{dataProviders},
+            dataProviderValues = #{dataProviderValues}, dataProviderRates = #{dataProviderRates},
+            accepter = #{accepter}, chain = #{chain}, commentScore = #{commentScore}, comment = #{comment},
+            enterpriseRelationshipStrength = #{enterpriseRelationshipStrength}, sharedPointsGain = #{sharedPointsGain},
+            continuousSharingRewards = #{continuousSharingRewards}, afterSalesEvaluationGain = #{afterSalesEvaluationGain},dataNames = #{dataNames}
+        WHERE taskId = #{taskId};
+    </update>
+
+    <!-- 删除任务 -->
+    <delete id="deleteTask" parameterType="int">
+        DELETE FROM `ry-vue`.tasks WHERE taskId = #{taskId};
+    </delete>
+
+
+
+
+</mapper>

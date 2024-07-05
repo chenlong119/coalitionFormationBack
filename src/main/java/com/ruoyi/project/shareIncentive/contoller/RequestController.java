@@ -1,11 +1,9 @@
 package com.ruoyi.project.shareIncentive.contoller;
-import com.ruoyi.project.shareIncentive.domain.AuctionRecord;
-import com.ruoyi.project.shareIncentive.domain.AuctionTask;
+
+import com.ruoyi.project.shareIncentive.domain.CompanyIncomeDto;
 import com.ruoyi.project.shareIncentive.domain.Request;
-import com.ruoyi.project.shareIncentive.service.AuctionService;
 import com.ruoyi.project.shareIncentive.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,5 +31,10 @@ public class RequestController {
     public void finishRequest(@PathVariable Integer id){
 
         requestService.finishRequest(id);
+    }
+
+    @PostMapping("/updateCompanyIncome")
+    public void updateCompany(@RequestBody CompanyIncomeDto companyIncomeDto){
+        requestService.updateCompanyIncome(companyIncomeDto);
     }
 }

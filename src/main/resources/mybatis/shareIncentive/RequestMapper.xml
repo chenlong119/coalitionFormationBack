@@ -70,7 +70,17 @@
         DELETE FROM `ry-vue`.tasks WHERE taskId = #{taskId};
     </delete>
 
-
-
-
+    <update id="updateCompanyIncome">
+        update company_income
+        <set>
+            <if test="marketShare!= null">market_share = #{marketShare}</if>
+            <if test="marketIncrease!= null">market_increase = #{marketIncrease}</if>
+            <if test="profitability!= null">profitability = #{profitability}</if>
+            <if test="productWidth!= null">product_width = #{productWidth}</if>
+            <if test="productDepth!= null">product_depth = #{productDepth}</if>
+            <if test="averageRio!= null"> average_rio = #{averageRio}</if>
+            <if test="turnOver!= null">turn_over = #{turnOver}</if>
+        </set>
+        where id = #{companyId}
+    </update>
 </mapper>

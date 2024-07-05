@@ -1,6 +1,7 @@
 package com.ruoyi.project.shareIncentive.service;
 
 
+import com.ruoyi.project.shareIncentive.domain.CompanyIncomeDto;
 import com.ruoyi.project.shareIncentive.domain.Request;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface RequestService {
 
     void finishRequest(Integer id);
 
+    void updateCompanyIncome(CompanyIncomeDto companyIncomeDto);
 }

@@ -1,7 +1,7 @@
 package com.ruoyi.project.shareIncentive.mapper;
+
+import com.ruoyi.project.shareIncentive.domain.CompanyIncomeDto;
 import com.ruoyi.project.shareIncentive.domain.Request;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -14,4 +14,5 @@ public interface RequestMapper {
 
     void setFinished(Integer id);
 
+    void updateCompanyIncome(CompanyIncomeDto companyIncomeDto);
 }

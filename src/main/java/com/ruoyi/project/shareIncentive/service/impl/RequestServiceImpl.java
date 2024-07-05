@@ -2,6 +2,7 @@ package com.ruoyi.project.shareIncentive.service.impl;
 
 
 
+import com.ruoyi.project.shareIncentive.domain.CompanyIncomeDto;
 import com.ruoyi.project.shareIncentive.domain.Request;
 import com.ruoyi.project.shareIncentive.mapper.RequestMapper;
 import com.ruoyi.project.shareIncentive.service.RequestService;
@@ -28,7 +29,14 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void finishRequest(Integer id){requestMapper.setFinished(id);};
+    public void finishRequest(Integer id){requestMapper.setFinished(id);}
+
+    @Override
+    public void updateCompanyIncome(CompanyIncomeDto companyIncomeDto) {
+        requestMapper.updateCompanyIncome(companyIncomeDto);
+    }
+
+    ;
 
 
 

@@ -495,7 +495,7 @@ public class CompanyServiceImpl implements CompanyService {
                 System.out.println(line);
             }
             int[] sorted_index = readAllIntsFromFile("sorted_index.txt");
-            int cnt = (int)(num * 0.1); // 比例
+            int cnt = (int)(num * 0.2); // 比例
             int[] top_index = new int[cnt];
             System.arraycopy(sorted_index, 0, top_index, 0, cnt);
             // 等待进程结束

@@ -1,9 +1,14 @@
 package com.ruoyi.project.shareIncentive.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 
-
+//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd HH:mm:ss", timezone = "GNT+8")
+//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//@TableField("CREATE_TIME")
+@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 public class BidCompanyGroup {
     private Integer bidId;
     private String userName;
@@ -11,6 +16,7 @@ public class BidCompanyGroup {
     private LocalDateTime bidTime;
     private String bidAmount;
     private LocalDateTime selectedDate;
+
     private String selected;
 
     public LocalDateTime getSelectedDate() {

@@ -24,4 +24,6 @@ public class AuctionServiceImpl implements AuctionService {
          auctionMapper.add(auctionRecord);
      }
 
+
+
 }
